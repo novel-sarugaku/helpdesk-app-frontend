@@ -1,73 +1,96 @@
-# React + TypeScript + Vite
+#  helpdesk-app-frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##  プロジェクト / アプリ概要
+このプロジェクトは、社内向けヘルプデスクアプリのフロントエンドです。
 
-Currently, two official plugins are available:
+社員が業務上の困りごとや質問をチャット形式で投稿すると、サポーターが回答を返す仕組みを提供します。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+【社員】  
+ログイン後、チャット画面からサポーターに質問を投げることができます。  
+自分の質問に対する回答を確認できるだけでなく、他の社員の質問も履歴として残るため参照することが可能です。  
+各質問には、ステータス（例：新規質問、対応中、解決済みなど） が設定され、対応状況を確認することができます。  
 
-## React Compiler
+【サポーター】  
+社員から寄せられた質問を確認し、適切な回答をチャットで返します。  
+また、全ての質問・回答の履歴を確認でき、対応状況の把握や品質管理に役立てられます。  
+各質問には、ステータス（例：新規質問、対応中、解決済みなど） が設定され、対応状況を確認することができます。  
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+【管理者】  
+社員やサポーターのユーザー管理（追加・削除）を行うことができます。  
+また、全ての質問・回答の履歴を確認でき、対応状況の把握や品質管理に役立てられます。  
 
-## Expanding the ESLint configuration
+すべてのユーザー（社員／サポーター／管理者）は、ログイン画面から認証を行い、  
+それぞれの専用ページにアクセスして機能を利用します。
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+##  使用技術
+- 言語: TypeScript
+- フレームワーク: React
+- ビルドツール: Vite
+- UIライブラリ: Chakra UI
+- パッケージ管理: Yarn
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+##  ディレクトリ構成（src/以下）
+- components/：UIコンポーネント群
+- core/：アプリ全体の設定・初期化
+- feature/：機能単位の実装置き場（hooks/components/handlers/queries/mutationsを集約）
+- models/：型定義・スキーマの集約
+- routes/：画面ルーティング定義
+- services/：バックエンドAPI呼び出し
+- shared/：横断的な共通資産
+- tests/：テスト共通セットアップ・モック・設定
+
+---
+
+##  前提条件
+- Node.js 24.x 以上を推奨
+
+  Node.js のバージョン確認
+  ```bash
+  node -v
+  ```
+  出力例
+  ```bash
+  v24.2.0
+  ```
+- Yarn（パッケージマネージャ）がインストールされていること
+  
+  Yarn のインストール状況を確認
+  ```bash
+  yarn -v
+  ```
+  出力例
+  ```bash
+  1.22.22
+  ```
+  Yarn が未インストールの場合、以下のコマンドでグローバルインストール
+  ```bash
+  npm install -g yarn
+  ```
+  > このコマンドは、Node.js 付属の npm を使用して、Yarn をグローバル環境（どのプロジェクトでも使える状態）にインストールします。
+  > 以降、プロジェクトごとの依存管理やスクリプト実行を Yarn で行うことができます。
+
+---
+
+##  環境構築手順
+1. リポジトリをクローン
+```bash
+  git clone git@github.com:novel-sarugaku/helpdesk-app-frontend.git
+  cd helpdesk-app-frontend
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+> 上記は SSH を使用した場合の例 です。  
+> HTTPS を使用する場合は GitHub 上でリポジトリのクローン用 URL を変更してください。
+2. 依存パッケージをインストール
+```bash
+yarn install
 ```
+> 初回実行時、yarn.lockおよび node_modulesフォルダが自動生成されます。
+3. 開発サーバーを起動  
+```bash
+yarn dev
+```
+4. ブラウザでアクセス  
+http://localhost:5173
