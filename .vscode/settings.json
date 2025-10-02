@@ -1,0 +1,8 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.printWidth": 100, // 1行の最大文字数を指定
+  "prettier.tabWidth": 2, // インデントに使用するスペースの数を指定
+  "prettier.useTabs": true, // スペースの代わりにタブを使用
+  "prettier.semi": true, // 文末にセミコロンを付ける
+  "prettier.singleQuote": true // シングルクォートを使用
+}

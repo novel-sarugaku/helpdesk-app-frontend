@@ -37,8 +37,4 @@ export default defineConfig([
     },
     settings: { react: { version: 'detect' } },
   },
-  {
-    files: ['**/*.test.ts', '**/*.test.tsx'],
-    rules: { '@typescript-eslint/no-empty-function': 'off' },
-  },
 ])
