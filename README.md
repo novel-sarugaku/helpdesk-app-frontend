@@ -148,16 +148,16 @@ http://localhost:5173
 ```mermaid
 gitGraph
     commit id:"初期化"
-    branch "feature/SIS-1"
-    checkout "feature/SIS-1"
+    branch "feature/SIS-XXX"
+    checkout "feature/SIS-XXX"
     commit id:"機能追加"
     checkout main
-    merge "feature/SIS-1" id:"マージ(機能追加)"
-    branch "fix/SIS-2"
-    checkout "fix/SIS-2"
+    merge "feature/SIS-XXX" id:"マージ(機能追加)"
+    branch "fix/SIS-XXX"
+    checkout "fix/SIS-XXX"
     commit id:"バグ修正"
     checkout main
-    merge "fix/SIS-2" id:"マージ(バグ修正)"
+    merge "fix/SIS-XXX" id:"マージ(バグ修正)"
 ```
 
 ----
