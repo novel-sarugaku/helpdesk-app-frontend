@@ -1,0 +1,34 @@
+name: Code checking with ESLint, Prettier, and Vitest # ワークフローの表示名
+
+on:
+  pull_request: # PRが作られた時に動かす
+    paths:
+      - '**' # リポジトリ内のどこを変更してもワークフローが走る
+  push: # pushされた時に動かす
+    paths:
+      - '**' # リポジトリ内のどこを変更してもワークフローが走る
+
+jobs:
+  code-style-check: # code-style-check→ジョブID。ジョブID = GitHub Actions内でそのジョブを区別するためのラベル
+    runs-on: ubuntu-latest # GitHub Actionsのジョブは「どんなOSのマシンで動かすか」を選べる。Linux（その中でもUbuntuという種類）の最新版を使う。
+
+    steps: # 手順を上から順に実行（uses:「既製のアクションを使う」、run:「シェルコマンドを実行する」）
+      - name: Checkout code
+        uses: actions/checkout@v4 # GitHub上のリポジトリの中身を仮想マシンにコピーして、テストなどを実行できるようにする
+
+      - name: Use Node.js version from .nvmrc
+        uses: actions/setup-node@v4 # Node.jsをインストール（（.nvmrcにはプロジェクトで使うNode.js のバージョン書かれている。GitHub Actionsの仮想マシンには、そのNodeバージョンが入っていない）
+        with:
+          node-version-file: .nvmrc # そこで.nvmrcを読み込んで、Node.jsバージョンをインストール
+
+      - name: Install dependencies with Yarn
+        run: yarn install --frozen-lockfile # 依存関係をインストール。package.json：おおざっぱなバージョン指定。yarn.lock：実際に入ったライブラリの正確なバージョン記載。--frozen-lockfile: package.jsonとyarn.lockがズレていたらエラーにしてくれるオプション
+
+      - name: Run ESLint (fail on warning or error)
+        run: yarn lint --max-warnings=0 # ESLintを実行。警告(warning)が1つでもあれば失敗扱いにする厳しめ設定
+
+      - name: Run Prettier (check only)
+        run: yarn format # Prettierの「チェック専用」モードを実行
+
+      - name: Run Vitest tests
+        run: yarn test # 単体テスト（Vitest）を実行

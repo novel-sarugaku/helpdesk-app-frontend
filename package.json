@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.26.0",
