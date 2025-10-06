@@ -37,4 +37,11 @@ export default defineConfig([
     },
     settings: { react: { version: 'detect' } },
   },
+  // ↓テストファイルだけESLintの特定ルールをゆるくするためのオーバーライド設定
+  {
+    files: ['**/*.test.ts', '**/*.test.tsx'], // 対象ファイルのパターンを指定
+    rules: {
+      '@typescript-eslint/no-empty-function': 'off', // 対象ファイルに限って、「空の関数を禁止するルール」を無効化（モックなどで「何もしない関数」を置くため）
+    },
+  },
 ])

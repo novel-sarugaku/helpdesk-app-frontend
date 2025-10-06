@@ -1,7 +1,9 @@
+import { AppRouter } from 'src/routes/home'
+
 function App() {
   return (
     <>
-      <h1>社内向けヘルプデスクアプリ作成中</h1>
+      <AppRouter />
     </>
   )
 }
