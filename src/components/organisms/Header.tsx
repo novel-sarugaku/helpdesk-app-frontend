@@ -14,7 +14,7 @@ export const Header = () => {
             </Link>
             <Spacer />
             <Link to={'/'}>
-              <Heading size='2xl' pr='300px' color='gray.500'>
+              <Heading size='2xl' color='gray.500'>
                 Ticket
               </Heading>
             </Link>
