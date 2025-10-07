@@ -10,12 +10,14 @@ describe('Header', () => {
       customRender(<Header />)
 
       expect(screen.getByText('NOVEL HELPDESK')).toBeInTheDocument()
+      expect(screen.getByText('Ticket')).toBeInTheDocument()
     })
 
-    it('システム名をクリックするとチケット一覧画面に遷移できる', () => {
+    it('リンク「NOVEL HELPDESK」や「Ticket」を押下するとチケット一覧画面に遷移する', () => {
       customRender(<Header />)
 
-      expect(screen.getByTestId('home-link')).toHaveAttribute('href', '/')
+      expect(screen.getByRole('link', { name: 'NOVEL HELPDESK' })).toHaveAttribute('href', '/')
+      expect(screen.getByRole('link', { name: 'Ticket' })).toHaveAttribute('href', '/')
     })
   })
 })
