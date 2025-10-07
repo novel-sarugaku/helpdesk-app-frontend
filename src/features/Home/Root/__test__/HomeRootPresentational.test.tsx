@@ -1,15 +1,21 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { screen } from '@testing-library/react'
 
 import { customRender } from '@/tests/helpers/customRender'
 import { HomeRootPresentational } from '@/features/Home/Root/HomeRootPresentational'
+import * as Header from 'src/components/organisms/Header'
+
+// Mocking the Header component
+vi.spyOn(Header, 'Header').mockImplementation(() => {
+  return <div data-testid='mock-header'>Mocked Header</div>
+})
 
 describe('HomeRootPresentational', () => {
   describe('正常系', () => {
-    it('表示されるべきテキストが表示される', () => {
+    it('Headerコンポーネントが表示される', () => {
       customRender(<HomeRootPresentational />)
 
-      expect(screen.getByText('社内向けヘルプデスクアプリ作成')).toBeInTheDocument()
+      expect(screen.getByTestId('mock-header')).toBeInTheDocument()
     })
   })
 })
