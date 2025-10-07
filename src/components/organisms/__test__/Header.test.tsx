@@ -11,5 +11,11 @@ describe('Header', () => {
 
       expect(screen.getByText('NOVEL HELPDESK')).toBeInTheDocument()
     })
+
+    it('システム名をクリックするとチケット一覧画面に遷移できる', () => {
+      customRender(<Header />)
+
+      expect(screen.getByTestId('home-link')).toHaveAttribute('href', '/')
+    })
   })
 })
