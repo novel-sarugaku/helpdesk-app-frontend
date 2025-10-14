@@ -1,17 +1,8 @@
-import { useEffect } from 'react'
-import { postLogin } from '@/services/internal/backend/v1/auth'
+import { LoginRootPresentational } from '@/features/Login/Root/LoginRootPresentational'
+import { useLoginHandler } from '@/features/Login/Root/hooks/handlers/useLoginHandler'
+// import { useLogoutHandler } from '@/shared/hooks/handlers/useLogoutHandler'
 
 export const LoginRootContainer = () => {
-  // API疎通確認用
-  useEffect(() => {
-    postLogin({ email: 'admin@example.com', password: 'P@ssw0rd' })
-      .then(() => {
-        console.log('ログイン成功！')
-      })
-      .catch(() => {
-        console.error('ログイン失敗！')
-      })
-  }, [])
-
-  return <h1>社内向けヘルプデスクアプリ ログイン画面</h1>
+  const { login, isError } = useLoginHandler()
+  return <LoginRootPresentational login={login} isError={isError} />
 }
