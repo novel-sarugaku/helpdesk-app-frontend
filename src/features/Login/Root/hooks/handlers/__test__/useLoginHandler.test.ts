@@ -1,6 +1,7 @@
 import { act } from 'react'
 import { describe, it, vi, expect, beforeEach } from 'vitest'
 import { type UseMutationResult } from '@tanstack/react-query'
+import { toaster } from '@/components/ui/toaster'
 
 import { customRenderHook } from '@/tests/helpers/customRenderHook'
 import { useLoginHandler } from '../useLoginHandler'
@@ -24,6 +25,13 @@ mockUseLoginMutation.mockReturnValue({
   mutateAsync: mockMutateAsync,
 } as unknown as UseMutationResult<void, Error, LoginRequest>)
 
+// Mocking the toaster
+const createSuccessMessage = 'ログインしました。'
+const mockToasterCreate = toaster.create
+vi.mock('@/components/ui/toaster', () => ({
+  toaster: { create: vi.fn() },
+}))
+
 // 各テストの前にすべてのモックの呼び出し履歴を消す
 beforeEach(() => {
   vi.clearAllMocks()
@@ -31,7 +39,7 @@ beforeEach(() => {
 
 describe('useLoginHandler', () => {
   describe('正常系', () => {
-    it('ログイン成功に成功した場合、mutateAsync、navigate が呼ばれる', async () => {
+    it('ログイン成功に成功した場合、mutateAsync、navigatem、toaster.create が呼ばれる', async () => {
       const { result } = customRenderHook(() => useLoginHandler())
 
       const request: LoginRequest = { email: 'test@example.com', password: 'testPassword_12345' }
@@ -41,11 +49,15 @@ describe('useLoginHandler', () => {
       expect(mockMutateAsync).toHaveBeenCalledTimes(1)
       expect(mockMutateAsync).toHaveBeenCalledWith(request)
       expect(mockNavigate).toHaveBeenCalledWith('/')
+      expect(mockToasterCreate).toHaveBeenCalledWith({
+        type: 'success',
+        description: createSuccessMessage,
+      })
     })
   })
 
   describe('異常系', () => {
-    it('ログインに失敗した場合、navigate は呼ばれない', async () => {
+    it('ログインに失敗した場合、navigate、toaster.create は呼ばれない', async () => {
       const mockError = new Error('ログインに失敗しました')
       const mockMutateAsyncError = vi.fn().mockRejectedValue(mockError)
       mockUseLoginMutation.mockReturnValue({
@@ -65,6 +77,10 @@ describe('useLoginHandler', () => {
       expect(mockMutateAsyncError).toHaveBeenCalledTimes(1)
       expect(mockMutateAsyncError).toHaveBeenCalledWith(request)
       expect(mockNavigate).not.toHaveBeenCalled()
+      expect(mockToasterCreate).not.toHaveBeenCalledWith({
+        type: 'success',
+        description: createSuccessMessage,
+      })
     })
   })
 })
