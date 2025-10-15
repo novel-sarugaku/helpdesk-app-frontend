@@ -10,11 +10,11 @@ export const LoginRootPresentational = ({ login, isError }: LoginRootPresentatio
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault() // ブラウザの自動送信（ページ遷移）を止める
 
-    const form_data = new FormData(event.target as HTMLFormElement)
-    const email_data = form_data.get('email') as string
-    const password_data = form_data.get('password') as string
+    const formData = new FormData(event.target as HTMLFormElement)
+    const emailData = formData.get('email') as string
+    const passwordData = formData.get('password') as string
 
-    void login({ email: email_data, password: password_data })
+    void login({ email: emailData, password: passwordData })
   }
 
   return (
@@ -30,7 +30,7 @@ export const LoginRootPresentational = ({ login, isError }: LoginRootPresentatio
           <form onSubmit={handleSubmit}>
             <Fieldset.Content bg='white' borderRadius='20px' mt={3} p={6}>
               {isError && (
-                <Alert.Root status='error'>
+                <Alert.Root status='error' role='alert'>
                   <Alert.Title>
                     ログインに失敗しました。
                     <br />

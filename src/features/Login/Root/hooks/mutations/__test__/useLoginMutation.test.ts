@@ -9,7 +9,7 @@ import { type LoginRequest } from '@/models/api/internal/backend/v1/request/auth
 
 const mockLoginRequest: LoginRequest = {
   email: 'test@example.com',
-  password: 'test_password_12345',
+  password: 'testPassword_12345',
 }
 
 describe('useLoginMutation', () => {

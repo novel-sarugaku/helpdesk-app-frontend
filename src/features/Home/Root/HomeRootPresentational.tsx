@@ -1,9 +1,13 @@
-import { Header } from '@/components/organisms/Header'
+import { HeaderPresentational } from '@/components/organisms/HeaderPresentational'
 
-export const HomeRootPresentational = () => {
+interface HomeRootPresentationalProps {
+  logout: () => Promise<void>
+}
+
+export const HomeRootPresentational = ({ logout }: HomeRootPresentationalProps) => {
   return (
     <>
-      <Header />
+      <HeaderPresentational logout={logout} />
     </>
   )
 }

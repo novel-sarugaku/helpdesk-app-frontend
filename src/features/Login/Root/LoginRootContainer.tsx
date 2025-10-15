@@ -1,6 +1,5 @@
 import { LoginRootPresentational } from '@/features/Login/Root/LoginRootPresentational'
 import { useLoginHandler } from '@/features/Login/Root/hooks/handlers/useLoginHandler'
-// import { useLogoutHandler } from '@/shared/hooks/handlers/useLogoutHandler'
 
 export const LoginRootContainer = () => {
   const { login, isError } = useLoginHandler()

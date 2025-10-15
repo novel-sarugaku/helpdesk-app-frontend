@@ -7,7 +7,7 @@ import * as HomeRootPresentational from '@/features/Home/Root/HomeRootPresentati
 
 // Mocking the HomeRootPresentational component
 vi.spyOn(HomeRootPresentational, 'HomeRootPresentational').mockImplementation(() => {
-  return <div data-testid='mock-homeRootPresentational'>Mocked BalanceTotalCard</div>
+  return <div data-testid='mock-homeRootPresentational'>Mocked HomeRootPresentational</div>
 })
 
 describe('HomeRootContainer', () => {
