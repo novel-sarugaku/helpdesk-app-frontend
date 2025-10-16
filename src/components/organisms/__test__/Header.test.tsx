@@ -2,7 +2,7 @@ import { describe, it, vi, expect } from 'vitest'
 import { screen, fireEvent } from '@testing-library/react'
 
 import { customRender } from '@/tests/helpers/customRender'
-import { HeaderPresentational } from '../HeaderPresentational'
+import { Header } from '../Header'
 
 const mockLogout = vi.fn()
 const defaultProps = {
@@ -12,7 +12,7 @@ const defaultProps = {
 describe('Header', () => {
   describe('正常系', () => {
     it('表示されるべきテキストが表示される', () => {
-      customRender(<HeaderPresentational {...defaultProps} />)
+      customRender(<Header {...defaultProps} />)
 
       expect(screen.getByText('NOVEL HELPDESK')).toBeInTheDocument()
       expect(screen.getByText('Ticket')).toBeInTheDocument()
@@ -20,14 +20,14 @@ describe('Header', () => {
     })
 
     it('リンク「NOVEL HELPDESK」や「Ticket」を押下するとチケット一覧画面に遷移する', () => {
-      customRender(<HeaderPresentational {...defaultProps} />)
+      customRender(<Header {...defaultProps} />)
 
       expect(screen.getByRole('link', { name: 'NOVEL HELPDESK' })).toHaveAttribute('href', '/')
       expect(screen.getByRole('link', { name: 'Ticket' })).toHaveAttribute('href', '/')
     })
 
     it('「Logout」を押下すると、logout が呼ばれる', () => {
-      customRender(<HeaderPresentational {...defaultProps} />)
+      customRender(<Header {...defaultProps} />)
 
       fireEvent.click(screen.getByRole('heading', { name: 'Logout' }))
 

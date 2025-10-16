@@ -1,4 +1,4 @@
-import { HeaderPresentational } from '@/components/organisms/HeaderPresentational'
+import { Header } from '@/components/organisms/Header'
 
 interface HomeRootPresentationalProps {
   logout: () => Promise<void>
@@ -7,7 +7,7 @@ interface HomeRootPresentationalProps {
 export const HomeRootPresentational = ({ logout }: HomeRootPresentationalProps) => {
   return (
     <>
-      <HeaderPresentational logout={logout} />
+      <Header logout={logout} />
     </>
   )
 }

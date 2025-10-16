@@ -19,7 +19,7 @@ export const LoginRootPresentational = ({ login, isError }: LoginRootPresentatio
 
   return (
     <>
-      <Box minH='100vh' bg='gray.200' display='flex' alignItems='center' justifyContent='center'>
+      <Box minH='100vh' bg='gray.200' display='grid' placeItems='center'>
         <Fieldset.Root size='lg' maxW='sm' color='gray.600' bg='gray.100' borderRadius='20px' p={8}>
           <Fieldset.Content alignItems='center'>
             <Fieldset.Legend fontWeight='bold' color='gray.600' fontSize='xl'>
