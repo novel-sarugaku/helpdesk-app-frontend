@@ -1,11 +1,11 @@
 import { Box, Heading, HStack, Spacer, Container } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
-interface HeaderProps {
-  logout: () => Promise<void>
-}
+import { useLogoutHandler } from '@/shared/hooks/handlers/useLogoutHandler'
 
-export const Header = ({ logout }: HeaderProps) => {
+export const Header = () => {
+  const { logout } = useLogoutHandler()
+
   return (
     <>
       <Box p={4} zIndex='100px' borderBottom='1px solid' borderColor='gray.200'>

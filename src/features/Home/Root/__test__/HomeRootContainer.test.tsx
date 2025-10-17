@@ -19,12 +19,12 @@ vi.spyOn(LoadingPresentational, 'LoadingPresentational').mockImplementation(() =
 })
 
 // Mocking the useNavigate hook
-const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom')
   return {
     ...actual,
-    useNavigate: () => mockNavigate,
+    // Navigateコンポーネント差し替え。props から to だけを取り出す
+    Navigate: ({ to }: { to: string }) => <div data-testid='mock-navigate' data-to={to} />,
   }
 })
 
@@ -60,7 +60,7 @@ describe('HomeRootContainer', () => {
       expect(screen.getByTestId('mock-loadingPresentational')).toBeInTheDocument()
     })
 
-    it('isError の場合、navigate が呼ばれる', () => {
+    it('isError の場合、Navigateコンポーネントが呼ばれる', () => {
       healthcheckAuthQuery.mockReturnValue({
         isPending: false,
         isError: true,
@@ -68,7 +68,8 @@ describe('HomeRootContainer', () => {
 
       customRender(<HomeRootContainer />)
 
-      expect(mockNavigate).toHaveBeenCalledWith('/login')
+      // .toHaveAttribute('data-to', '/login') → data-to という属性があり、その値が '/login' か
+      expect(screen.getByTestId('mock-navigate')).toHaveAttribute('data-to', '/login')
     })
   })
 })

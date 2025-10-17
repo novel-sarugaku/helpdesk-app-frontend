@@ -83,10 +83,7 @@ describe('useLogoutHandler', () => {
       expect(mockMutateAsyncError).toHaveBeenCalledTimes(1)
       expect(mockQueryClientClear).not.toHaveBeenCalled()
       expect(mockNavigate).not.toHaveBeenCalled()
-      expect(mockToasterCreate).not.toHaveBeenCalledWith({
-        type: 'success',
-        description: createSuccessMessage,
-      })
+      expect(mockToasterCreate).not.toHaveBeenCalled()
     })
   })
 })
