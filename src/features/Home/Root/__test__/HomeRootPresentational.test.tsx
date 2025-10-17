@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { customRender } from '@/tests/helpers/customRender'
 import { HomeRootPresentational } from '@/features/Home/Root/HomeRootPresentational'
-import * as Header from 'src/components/organisms/Header'
+import * as Header from '@/components/organisms/Header'
 
 // Mocking the Header component
 vi.spyOn(Header, 'Header').mockImplementation(() => {
