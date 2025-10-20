@@ -2,15 +2,15 @@ import { useMemo } from 'react'
 import { Navigate } from 'react-router-dom'
 
 import { LoadingPresentational } from '@/shared/ui/Loading/LoadingPresentational'
-import { HomeRootPresentational } from '@/features/Home/Root/HomeRootPresentational'
+import { AdminAccountPresentational } from '@/features/Admin/Account/AdminAccountPresentational'
 import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 
-export const HomeRootContainer = () => {
+export const AdminAccountContainer = () => {
   const { data: userAccountType, isError, isPending } = useHealthcheckAuthQuery()
 
   return useMemo(() => {
     if (isPending) return <LoadingPresentational />
     if (isError) return <Navigate to='/login' />
-    return <HomeRootPresentational userAccountType={userAccountType} />
+    return <AdminAccountPresentational userAccountType={userAccountType} />
   }, [isPending, isError, userAccountType])
 }

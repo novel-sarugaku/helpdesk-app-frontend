@@ -2,13 +2,18 @@ import { describe, it, vi, expect } from 'vitest'
 import { waitFor } from '@testing-library/react'
 
 import { customRenderHook } from '@/tests/helpers/customRenderHook'
-import { useHealthcheckAuthQuery } from '@/features/Login/Root/hooks/queries/useHealthcheckAuthQuery'
+import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import * as getHealthcheckAuth from '@/services/internal/backend/v1/healthcheck'
+import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+
+const mockHealthcheckAuthResponse: HealthcheckAuthResponse = 'admin'
 
 describe('useHealthcheckAuthQuery', () => {
   describe('正常系', () => {
-    it('アクセストークン確認API呼び出しに成功する', async () => {
-      vi.spyOn(getHealthcheckAuth, 'getHealthcheckAuth').mockResolvedValue()
+    it('アクセストークン確認API呼び出しに成功した場合、正しいレスポンスを返す', async () => {
+      vi.spyOn(getHealthcheckAuth, 'getHealthcheckAuth').mockResolvedValue(
+        mockHealthcheckAuthResponse,
+      )
 
       const { result } = customRenderHook(() => useHealthcheckAuthQuery())
 
@@ -19,6 +24,7 @@ describe('useHealthcheckAuthQuery', () => {
       expect(getHealthcheckAuth.getHealthcheckAuth).toHaveBeenCalledTimes(1)
       expect(result.current.isPending).toBe(false)
       expect(result.current.isError).toBe(false)
+      expect(result.current.data).toEqual(mockHealthcheckAuthResponse)
     })
   })
 
