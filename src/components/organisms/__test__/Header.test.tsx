@@ -11,15 +11,7 @@ const defaultProps = {
   userAccountType: mockAdminAccountType,
 }
 
-const mockStaffAccountType: AccountType = 'staff'
-const staffProps = {
-  userAccountType: mockStaffAccountType,
-}
-
-const mockSupporterAccountType: AccountType = 'supporter'
-const supporterProps = {
-  userAccountType: mockSupporterAccountType,
-}
+const nonAdminAccountTypes: AccountType[] = ['staff', 'supporter']
 
 //  Mocking useLogoutHandler hook
 const mockLogout = vi.fn()
@@ -35,7 +27,7 @@ describe('Header', () => {
       expect(screen.getByText('Logout')).toBeInTheDocument()
     })
 
-    it('リンク「NOVEL HELPDESK」や「Ticket」を押下するとチケット一覧画面に遷移する', () => {
+    it("リンク「NOVEL HELPDESK」や「Ticket」の href が、'/' である", () => {
       customRender(<Header {...defaultProps} />)
 
       expect(screen.getByRole('link', { name: 'NOVEL HELPDESK' })).toHaveAttribute('href', '/')
@@ -57,21 +49,16 @@ describe('Header', () => {
       expect(screen.getByText('|')).toBeInTheDocument()
     })
 
-    it('userAccountType が staff のとき、リンク「Account」と「|」が表示されない', () => {
-      customRender(<Header {...staffProps} />)
+    it('userAccountType が admin でないとき、リンク「Account」と「|」が表示されない', () => {
+      nonAdminAccountTypes.forEach((type) => {
+        customRender(<Header userAccountType={type} />)
 
-      expect(screen.queryByRole('link', { name: 'Account' })).not.toBeInTheDocument()
-      expect(screen.queryByText('|')).not.toBeInTheDocument()
+        expect(screen.queryByRole('link', { name: 'Account' })).not.toBeInTheDocument()
+        expect(screen.queryByText('|')).not.toBeInTheDocument()
+      })
     })
 
-    it('userAccountType が supporter のとき、リンク「Account」と「|」が表示されない', () => {
-      customRender(<Header {...supporterProps} />)
-
-      expect(screen.queryByRole('link', { name: 'Account' })).not.toBeInTheDocument()
-      expect(screen.queryByText('|')).not.toBeInTheDocument()
-    })
-
-    it('リンク「Account」を押下するとアカウント管理画面に遷移する', () => {
+    it("リンク「Account」の href が、'/admin/account' である", () => {
       customRender(<Header {...defaultProps} />)
 
       expect(screen.getByRole('link', { name: 'Account' })).toHaveAttribute(

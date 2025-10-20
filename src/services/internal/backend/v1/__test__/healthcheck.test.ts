@@ -3,8 +3,10 @@ import { describe, it, vi, expect } from 'vitest'
 import * as client from '../client'
 import { getHealthcheckAuth } from '../healthcheck'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
-const mockHealthcheckAuthResponse: HealthcheckAuthResponse = 'admin'
+const mockUserAccountType: AccountType = 'admin'
+const mockHealthcheckAuthResponse: HealthcheckAuthResponse = { account_type: mockUserAccountType }
 
 describe('getHealthcheckAuth', () => {
   describe('正常系', () => {

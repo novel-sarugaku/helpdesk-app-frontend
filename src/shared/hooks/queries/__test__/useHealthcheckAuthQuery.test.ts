@@ -5,8 +5,10 @@ import { customRenderHook } from '@/tests/helpers/customRenderHook'
 import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import * as getHealthcheckAuth from '@/services/internal/backend/v1/healthcheck'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
-const mockHealthcheckAuthResponse: HealthcheckAuthResponse = 'admin'
+const mockUserAccountType: AccountType = 'admin'
+const mockHealthcheckAuthResponse: HealthcheckAuthResponse = { account_type: mockUserAccountType }
 
 describe('useHealthcheckAuthQuery', () => {
   describe('正常系', () => {
