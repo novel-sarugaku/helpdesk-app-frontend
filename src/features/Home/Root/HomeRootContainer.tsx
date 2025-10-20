@@ -6,11 +6,11 @@ import { HomeRootPresentational } from '@/features/Home/Root/HomeRootPresentatio
 import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 
 export const HomeRootContainer = () => {
-  const { data: userAccountType, isError, isPending } = useHealthcheckAuthQuery()
+  const { data, isError, isPending } = useHealthcheckAuthQuery()
 
   return useMemo(() => {
     if (isPending) return <LoadingPresentational />
     if (isError) return <Navigate to='/login' />
-    return <HomeRootPresentational userAccountType={userAccountType} />
-  }, [isPending, isError, userAccountType])
+    return <HomeRootPresentational userAccountType={data.account_type} />
+  }, [isPending, isError, data])
 }

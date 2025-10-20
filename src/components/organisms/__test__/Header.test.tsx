@@ -4,19 +4,19 @@ import { screen, fireEvent } from '@testing-library/react'
 import { customRender } from '@/tests/helpers/customRender'
 import { Header } from '../Header'
 import * as logout from '@/shared/hooks/handlers/useLogoutHandler'
-import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
-const mockAdminAccountType: HealthcheckAuthResponse = 'admin'
+const mockAdminAccountType: AccountType = 'admin'
 const defaultProps = {
   userAccountType: mockAdminAccountType,
 }
 
-const mockStaffAccountType: HealthcheckAuthResponse = 'staff'
+const mockStaffAccountType: AccountType = 'staff'
 const staffProps = {
   userAccountType: mockStaffAccountType,
 }
 
-const mockSupporterAccountType: HealthcheckAuthResponse = 'supporter'
+const mockSupporterAccountType: AccountType = 'supporter'
 const supporterProps = {
   userAccountType: mockSupporterAccountType,
 }

@@ -2,10 +2,10 @@ import { Box, Heading, HStack, Spacer, Container, Show } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
 import { useLogoutHandler } from '@/shared/hooks/handlers/useLogoutHandler'
-import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
 interface HeaderProps {
-  userAccountType: HealthcheckAuthResponse
+  userAccountType: AccountType
 }
 
 export const Header = ({ userAccountType }: HeaderProps) => {

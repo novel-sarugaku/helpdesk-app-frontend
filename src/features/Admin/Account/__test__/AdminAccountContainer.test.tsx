@@ -8,6 +8,7 @@ import * as AdminAccountPresentational from '@/features/Admin/Account/AdminAccou
 import * as LoadingPresentational from '@/shared/ui/Loading/LoadingPresentational'
 import * as useHealthcheckAuthQuery from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
 // Mocking the AdminAccountPresentational component
 const mockAdminAccountPresentational = vi
@@ -34,21 +35,21 @@ vi.mock('react-router-dom', async () => {
 })
 
 // Mocking the useHealthcheckAuthQuery hook
-const mockUserAccountType = 'admin'
+const mockUserAccountType: AccountType = 'admin'
 const healthcheckAuthQuery = vi.spyOn(useHealthcheckAuthQuery, 'useHealthcheckAuthQuery')
 
 beforeEach(() => {
   vi.clearAllMocks()
 })
 
-describe('HomeRootContainer', () => {
+describe('AdminAccountContainer', () => {
   describe('正常系', () => {
     it('!isPending および !isError の場合、AdminAccountPresentationalコンポーネントに正しいpropsが渡され表示される', () => {
       healthcheckAuthQuery.mockReturnValue({
         isPending: false,
         isError: false,
-        data: mockUserAccountType,
-      } as UseQueryResult<HealthcheckAuthResponse>)
+        data: { account_type: mockUserAccountType },
+      } as unknown as UseQueryResult<HealthcheckAuthResponse>)
 
       customRender(<AdminAccountContainer />)
 

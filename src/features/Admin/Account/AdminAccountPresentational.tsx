@@ -1,8 +1,8 @@
 import { Header } from '@/components/organisms/Header'
-import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
 interface AdminAccountPresentationalProps {
-  userAccountType: HealthcheckAuthResponse
+  userAccountType: AccountType
 }
 
 export const AdminAccountPresentational = ({

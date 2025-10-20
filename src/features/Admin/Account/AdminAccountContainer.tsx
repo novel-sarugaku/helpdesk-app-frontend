@@ -6,11 +6,11 @@ import { AdminAccountPresentational } from '@/features/Admin/Account/AdminAccoun
 import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 
 export const AdminAccountContainer = () => {
-  const { data: userAccountType, isError, isPending } = useHealthcheckAuthQuery()
+  const { data, isError, isPending } = useHealthcheckAuthQuery()
 
   return useMemo(() => {
     if (isPending) return <LoadingPresentational />
     if (isError) return <Navigate to='/login' />
-    return <AdminAccountPresentational userAccountType={userAccountType} />
-  }, [isPending, isError, userAccountType])
+    return <AdminAccountPresentational userAccountType={data.account_type} />
+  }, [isPending, isError, data])
 }

@@ -8,6 +8,7 @@ import * as HomeRootPresentational from '@/features/Home/Root/HomeRootPresentati
 import * as LoadingPresentational from '@/shared/ui/Loading/LoadingPresentational'
 import * as useHealthcheckAuthQuery from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
 // Mocking the HomeRootPresentational component
 const mockHomeRootPresentational = vi
@@ -32,7 +33,7 @@ vi.mock('react-router-dom', async () => {
 })
 
 // Mocking the useHealthcheckAuthQuery hook
-const mockUserAccountType = 'admin'
+const mockUserAccountType: AccountType = 'admin'
 const healthcheckAuthQuery = vi.spyOn(useHealthcheckAuthQuery, 'useHealthcheckAuthQuery')
 
 beforeEach(() => {
@@ -45,8 +46,8 @@ describe('HomeRootContainer', () => {
       healthcheckAuthQuery.mockReturnValue({
         isPending: false,
         isError: false,
-        data: mockUserAccountType,
-      } as UseQueryResult<HealthcheckAuthResponse>)
+        data: { account_type: mockUserAccountType },
+      } as unknown as UseQueryResult<HealthcheckAuthResponse>)
 
       customRender(<HomeRootContainer />)
 

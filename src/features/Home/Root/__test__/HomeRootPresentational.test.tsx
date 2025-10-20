@@ -4,9 +4,9 @@ import { screen } from '@testing-library/react'
 import { customRender } from '@/tests/helpers/customRender'
 import { HomeRootPresentational } from '@/features/Home/Root/HomeRootPresentational'
 import * as Header from '@/components/organisms/Header'
-import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
+import { type AccountType } from '@/models/constants/accountType'
 
-const mockUserAccountType: HealthcheckAuthResponse = 'admin'
+const mockUserAccountType: AccountType = 'admin'
 const defaultProps = {
   userAccountType: mockUserAccountType,
 }
