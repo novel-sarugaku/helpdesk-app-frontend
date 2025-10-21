@@ -4,10 +4,12 @@ import { screen, fireEvent } from '@testing-library/react'
 import { customRender } from '@/tests/helpers/customRender'
 import { Header } from '../Header'
 import * as logout from '@/shared/hooks/handlers/useLogoutHandler'
-import { type AccountType, userAccountTypes } from '@/models/constants/accountType'
+import { type AccountType } from '@/models/constants/accountType'
 
-const adminAccountTypesProps: { userAccountType: AccountType } = {
-  userAccountType: 'admin',
+const adminAccountType: AccountType = 'admin'
+const userAccountTypes: AccountType[] = [adminAccountType, 'staff', 'supporter']
+const defaultProps = {
+  userAccountType: adminAccountType,
 }
 
 //  Mocking useLogoutHandler hook
@@ -17,7 +19,7 @@ vi.spyOn(logout, 'useLogoutHandler').mockReturnValue({ logout: mockLogout })
 describe('Header', () => {
   describe('正常系', () => {
     it('表示されるべきテキストが表示される', () => {
-      customRender(<Header {...adminAccountTypesProps} />)
+      customRender(<Header {...defaultProps} />)
 
       expect(screen.getByText('NOVEL HELPDESK')).toBeInTheDocument()
       expect(screen.getByText('Ticket')).toBeInTheDocument()
@@ -25,14 +27,14 @@ describe('Header', () => {
     })
 
     it("リンク「NOVEL HELPDESK」や「Ticket」の href が、'/' である", () => {
-      customRender(<Header {...adminAccountTypesProps} />)
+      customRender(<Header {...defaultProps} />)
 
       expect(screen.getByRole('link', { name: 'NOVEL HELPDESK' })).toHaveAttribute('href', '/')
       expect(screen.getByRole('link', { name: 'Ticket' })).toHaveAttribute('href', '/')
     })
 
     it('「Logout」を押下すると、logout が呼ばれる', () => {
-      customRender(<Header {...adminAccountTypesProps} />)
+      customRender(<Header {...defaultProps} />)
 
       fireEvent.click(screen.getByRole('heading', { name: 'Logout' }))
 
@@ -40,16 +42,16 @@ describe('Header', () => {
     })
 
     it('userAccountType が admin のとき、リンク「Account」と「|」が表示される', () => {
-      customRender(<Header {...adminAccountTypesProps} />)
+      customRender(<Header {...defaultProps} />)
 
       expect(screen.getByRole('link', { name: 'Account' })).toBeInTheDocument()
       expect(screen.getByText('|')).toBeInTheDocument()
     })
 
     it('userAccountType が admin でないとき、リンク「Account」と「|」が表示されない', () => {
-      const nonAdminAccountTypes = userAccountTypes.filter((type) => type !== 'admin')
+      userAccountTypes.forEach((type) => {
+        if (type === 'admin') return
 
-      nonAdminAccountTypes.forEach((type) => {
         customRender(<Header userAccountType={type} />)
 
         expect(screen.queryByRole('link', { name: 'Account' })).not.toBeInTheDocument()
@@ -58,7 +60,7 @@ describe('Header', () => {
     })
 
     it("リンク「Account」の href が、'/admin/account' である", () => {
-      customRender(<Header {...adminAccountTypesProps} />)
+      customRender(<Header {...defaultProps} />)
 
       expect(screen.getByRole('link', { name: 'Account' })).toHaveAttribute(
         'href',
