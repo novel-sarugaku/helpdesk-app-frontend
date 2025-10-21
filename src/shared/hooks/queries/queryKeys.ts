@@ -1,3 +1,3 @@
-export const healthcheckAuth = {
-  all: ['healthcheckAuth'],
+export const queryKeys = {
+  checkAuth: ['healthcheckAuth', 'checkAuth'] as const,
 }
