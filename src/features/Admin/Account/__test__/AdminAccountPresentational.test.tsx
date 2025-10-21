@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { screen } from '@testing-library/react'
 
 import { customRender } from '@/tests/helpers/customRender'
-import { HomeRootPresentational } from '@/features/Home/Root/HomeRootPresentational'
+import { AdminAccountPresentational } from '@/features/Admin/Account/AdminAccountPresentational'
 import * as Header from '@/components/organisms/Header'
 import { type AccountType } from '@/models/constants/accountType'
 
@@ -16,10 +16,16 @@ const mockHeader = vi.spyOn(Header, 'Header').mockImplementation(() => {
   return <div data-testid='mock-header'>Mocked Header</div>
 })
 
-describe('HomeRootPresentational', () => {
+describe('AdminAccountPresentational', () => {
   describe('正常系', () => {
+    it('表示されるべきテキストが表示される', () => {
+      customRender(<AdminAccountPresentational {...defaultProps} />)
+
+      expect(screen.getByText('アカウント管理画面')).toBeInTheDocument()
+    })
+
     it('正しいpropsでHeaderコンポーネントが表示される', () => {
-      customRender(<HomeRootPresentational {...defaultProps} />)
+      customRender(<AdminAccountPresentational {...defaultProps} />)
 
       expect(screen.getByTestId('mock-header')).toBeInTheDocument()
       expect(mockHeader.mock.calls[0][0]).toEqual(

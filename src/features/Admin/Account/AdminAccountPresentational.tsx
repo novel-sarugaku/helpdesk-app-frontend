@@ -1,14 +1,17 @@
 import { Header } from '@/components/organisms/Header'
 import { type AccountType } from '@/models/constants/accountType'
 
-interface HomeRootPresentationalProps {
+interface AdminAccountPresentationalProps {
   userAccountType: AccountType
 }
 
-export const HomeRootPresentational = ({ userAccountType }: HomeRootPresentationalProps) => {
+export const AdminAccountPresentational = ({
+  userAccountType,
+}: AdminAccountPresentationalProps) => {
   return (
     <>
       <Header userAccountType={userAccountType} />
+      <div>アカウント管理画面</div>
     </>
   )
 }
