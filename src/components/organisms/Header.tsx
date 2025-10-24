@@ -13,7 +13,7 @@ export const Header = ({ userAccountType }: HeaderProps) => {
 
   return (
     <>
-      <Box p={4} zIndex='100px' borderBottom='1px solid' borderColor='gray.200'>
+      <Box py={4} zIndex='100px' borderBottom='1px solid' borderColor='gray.200'>
         <Container>
           <HStack>
             <Link to={'/'}>
