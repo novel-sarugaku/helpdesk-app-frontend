@@ -1,13 +1,13 @@
 import { Container, Text, Table } from '@chakra-ui/react'
 
-import { accountTypeToJa } from '@/shared/utils/format/labelFormatters'
-import { type GetAccountResponse } from '@/models/api/internal/backend/v1/response/account'
+import { accountTypeToJa } from '@/shared/logic/format/labelFormatters'
+import { type GetAccountResponseItem } from '@/models/api/internal/backend/v1/response/account'
 
 interface AccountTableCardProps {
-  userAccountData: GetAccountResponse[]
+  allAccountsList: GetAccountResponseItem[]
 }
 
-export const AccountTableCard = ({ userAccountData }: AccountTableCardProps) => {
+export const AccountTableCard = ({ allAccountsList }: AccountTableCardProps) => {
   return (
     <>
       <Container my={9}>
@@ -30,7 +30,7 @@ export const AccountTableCard = ({ userAccountData }: AccountTableCardProps) => 
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {userAccountData
+            {allAccountsList
               .filter((account) => account.account_type !== 'admin')
               .map((account) => (
                 <Table.Row key={account.id}>

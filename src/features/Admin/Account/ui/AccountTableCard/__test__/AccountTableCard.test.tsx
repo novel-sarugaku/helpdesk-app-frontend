@@ -3,9 +3,9 @@ import { screen } from '@testing-library/react'
 
 import { customRender } from '@/tests/helpers/customRender'
 import { AccountTableCard } from '@/features/Admin/Account/ui/AccountTableCard/AccountTableCard'
-import { type GetAccountResponse } from '@/models/api/internal/backend/v1/response/account'
+import { type GetAccountResponseItem } from '@/models/api/internal/backend/v1/response/account'
 
-const mockGetAccountResponse: GetAccountResponse[] = [
+const mockGetAccountResponseItem: GetAccountResponseItem[] = [
   {
     id: 1,
     name: 'テストユーザー1',
@@ -20,7 +20,7 @@ const mockGetAccountResponse: GetAccountResponse[] = [
   },
 ]
 const defaultProps = {
-  userAccountData: mockGetAccountResponse,
+  allAccountsList: mockGetAccountResponseItem,
 }
 
 const headerRow = ['表示名', 'メールアドレス', 'アカウント種別']

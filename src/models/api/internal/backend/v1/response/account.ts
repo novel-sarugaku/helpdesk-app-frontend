@@ -1,6 +1,6 @@
 import { type AccountType } from '@/models/constants/accountType'
 
-export type GetAccountResponse = {
+export type GetAccountResponseItem = {
   id: number
   name: string
   email: string

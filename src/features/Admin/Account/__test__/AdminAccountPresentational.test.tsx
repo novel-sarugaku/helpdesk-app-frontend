@@ -6,10 +6,10 @@ import { AdminAccountPresentational } from '@/features/Admin/Account/AdminAccoun
 import * as Header from '@/components/organisms/Header'
 import * as AccountTableCard from '@/features/Admin/Account/ui/AccountTableCard/AccountTableCard'
 import { type AccountType } from '@/models/constants/accountType'
-import { type GetAccountResponse } from '@/models/api/internal/backend/v1/response/account'
+import { type GetAccountResponseItem } from '@/models/api/internal/backend/v1/response/account'
 
 const mockUserAccountType: AccountType = 'admin'
-const mockUserAccountData: GetAccountResponse[] = [
+const mockAllAccountsList: GetAccountResponseItem[] = [
   {
     id: 1,
     name: 'テストユーザー',
@@ -19,7 +19,7 @@ const mockUserAccountData: GetAccountResponse[] = [
 ]
 const defaultProps = {
   userAccountType: mockUserAccountType,
-  userAccountData: mockUserAccountData,
+  allAccountsList: mockAllAccountsList,
 }
 
 // Mocking the Header component
@@ -53,7 +53,7 @@ describe('AdminAccountPresentational', () => {
       expect(screen.getByTestId('mock-accountTableCard')).toBeInTheDocument()
       expect(mockAccountTableCard.mock.calls[0][0]).toEqual(
         expect.objectContaining({
-          userAccountData: mockUserAccountData,
+          allAccountsList: mockAllAccountsList,
         }),
       )
     })

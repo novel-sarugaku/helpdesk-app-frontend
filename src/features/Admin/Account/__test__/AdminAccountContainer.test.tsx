@@ -57,7 +57,7 @@ describe('AdminAccountContainer', () => {
       expect(mockAdminAccountPresentational.mock.calls[0][0]).toEqual(
         expect.objectContaining({
           userAccountType: mockUserAccountType,
-          userAccountData: [],
+          allAccountsList: [],
         }),
       )
     })

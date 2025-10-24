@@ -1,3 +1,3 @@
 export const Accounts = {
-  all: ['user'] as const,
+  all: ['users'] as const,
 }

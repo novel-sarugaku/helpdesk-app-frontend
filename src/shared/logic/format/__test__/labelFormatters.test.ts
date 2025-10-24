@@ -6,8 +6,8 @@ import { accountTypeToJa } from '../labelFormatters'
 describe('labelFormatters', () => {
   describe('accountTypeToJa', () => {
     describe('正常系', () => {
-      it('AccountType が「admin」のときは空文字を返す', () => {
-        expect(accountTypeToJa('admin' as AccountType)).toBe('')
+      it('AccountType が「admin」のときは「管理者」を返す', () => {
+        expect(accountTypeToJa('admin' as AccountType)).toBe('管理者')
       })
 
       it('AccountType が「staff」のときは「社員」を返す', () => {

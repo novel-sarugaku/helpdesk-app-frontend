@@ -7,17 +7,17 @@ import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAu
 import { useAccountQuery } from '@/features/Admin/Account/hooks/queries/useAccountQuery'
 
 export const AdminAccountContainer = () => {
-  const { data, isError, isPending } = useHealthcheckAuthQuery()
-  const { data: accountData = [] } = useAccountQuery() // dataがない場合は、空配列を入れる
+  const { data: current_account, isError, isPending } = useHealthcheckAuthQuery()
+  const { data: allAccountsList = [] } = useAccountQuery() // dataがない場合は、空配列を入れる
 
   return useMemo(() => {
     if (isPending) return <LoadingPresentational />
     if (isError) return <Navigate to='/login' />
     return (
       <AdminAccountPresentational
-        userAccountType={data.account_type}
-        userAccountData={accountData}
+        userAccountType={current_account.account_type}
+        allAccountsList={allAccountsList}
       />
     )
-  }, [isPending, isError, data, accountData])
+  }, [isPending, isError, current_account, allAccountsList])
 }
