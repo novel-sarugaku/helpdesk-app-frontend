@@ -6,3 +6,10 @@ export type GetAccountResponseItem = {
   email: string
   account_type: AccountType
 }
+
+export type CreateAccountResponse = {
+  id: number
+  name: string
+  email: string
+  account_type: AccountType
+}
