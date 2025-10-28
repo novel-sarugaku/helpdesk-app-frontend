@@ -17,9 +17,19 @@ const mockAllAccountsList: GetAccountResponseItem[] = [
     account_type: 'admin',
   },
 ]
+const mockHandleCreateAccount = vi.fn()
+const mockIsDialogOpen = false
+const mockOnDialogOpenChange = vi.fn()
+const mockEmailError = null
+const mockSetEmailError = vi.fn()
 const defaultProps = {
   userAccountType: mockUserAccountType,
   allAccountsList: mockAllAccountsList,
+  handleCreateAccount: mockHandleCreateAccount,
+  isDialogOpen: mockIsDialogOpen,
+  onDialogOpenChange: mockOnDialogOpenChange,
+  emailError: mockEmailError,
+  setEmailError: mockSetEmailError,
 }
 
 // Mocking the Header component
@@ -54,6 +64,11 @@ describe('AdminAccountPresentational', () => {
       expect(mockAccountTableCard.mock.calls[0][0]).toEqual(
         expect.objectContaining({
           allAccountsList: mockAllAccountsList,
+          handleCreateAccount: mockHandleCreateAccount,
+          isDialogOpen: mockIsDialogOpen,
+          onDialogOpenChange: mockOnDialogOpenChange,
+          emailError: mockEmailError,
+          setEmailError: mockSetEmailError,
         }),
       )
     })

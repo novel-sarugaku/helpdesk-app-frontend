@@ -1,19 +1,43 @@
-import { Container, Text, Table } from '@chakra-ui/react'
+import { Container, Text, Table, HStack } from '@chakra-ui/react'
 
 import { accountTypeToJa } from '@/shared/logic/format/labelFormatters'
+import { CreateAccountDialogCard } from '@/features/Admin/Account/ui/AccountCreateDialogCard/CreateAccountDialogCard'
 import { type GetAccountResponseItem } from '@/models/api/internal/backend/v1/response/account'
+import { type CreateAccountRequest } from '@/models/api/internal/backend/v1/request/account'
 
 interface AccountTableCardProps {
   allAccountsList: GetAccountResponseItem[]
+  handleCreateAccount: (request: CreateAccountRequest) => void
+  isDialogOpen: boolean
+  onDialogOpenChange: (open: boolean) => void
+  emailError: string | null
+  setEmailError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export const AccountTableCard = ({ allAccountsList }: AccountTableCardProps) => {
+export const AccountTableCard = ({
+  allAccountsList,
+  handleCreateAccount,
+  isDialogOpen,
+  onDialogOpenChange,
+  emailError,
+  setEmailError,
+}: AccountTableCardProps) => {
   return (
     <>
       <Container my={9}>
-        <Text mb={5} color='gray.600' fontSize='lg' fontWeight='bold'>
-          Account 一覧
-        </Text>
+        <HStack mb={5}>
+          <Text color='gray.600' fontSize='lg' fontWeight='bold'>
+            Account 一覧
+          </Text>
+          <CreateAccountDialogCard
+            allAccountsList={allAccountsList}
+            handleCreateAccount={handleCreateAccount}
+            isDialogOpen={isDialogOpen}
+            onDialogOpenChange={onDialogOpenChange}
+            emailError={emailError}
+            setEmailError={setEmailError}
+          />
+        </HStack>
 
         <Table.Root>
           <Table.Header>
