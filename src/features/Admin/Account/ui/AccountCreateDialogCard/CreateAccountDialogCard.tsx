@@ -80,7 +80,7 @@ export const CreateAccountDialogCard = ({
 
         <Portal>
           <Dialog.Backdrop />
-          <Dialog.Positioner>
+          <Dialog.Positioner placeItems='center'>
             <Dialog.Content borderRadius='4xl'>
               <Dialog.Header color='gray.600'>
                 <Dialog.Title>Account 新規登録</Dialog.Title>
