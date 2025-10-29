@@ -7,11 +7,11 @@ import { type CreateAccountRequest } from '@/models/api/internal/backend/v1/requ
 interface AdminAccountPresentationalProps {
   userAccountType: AccountType
   allAccountsList: GetAccountResponseItem[]
-  handleCreateAccount: (request: CreateAccountRequest) => void
+  handleCreateAccount: (request: CreateAccountRequest) => Promise<void>
   isDialogOpen: boolean
   onDialogOpenChange: (open: boolean) => void
-  emailError: string | null
-  setEmailError: React.Dispatch<React.SetStateAction<string | null>>
+  formError: string | null
+  setFormError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export const AdminAccountPresentational = ({
@@ -20,8 +20,8 @@ export const AdminAccountPresentational = ({
   handleCreateAccount,
   isDialogOpen,
   onDialogOpenChange,
-  emailError,
-  setEmailError,
+  formError,
+  setFormError,
 }: AdminAccountPresentationalProps) => {
   return (
     <>
@@ -32,8 +32,8 @@ export const AdminAccountPresentational = ({
         handleCreateAccount={handleCreateAccount}
         isDialogOpen={isDialogOpen}
         onDialogOpenChange={onDialogOpenChange}
-        emailError={emailError}
-        setEmailError={setEmailError}
+        formError={formError}
+        setFormError={setFormError}
       />
     </>
   )

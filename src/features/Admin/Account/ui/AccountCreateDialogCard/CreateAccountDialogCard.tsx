@@ -13,26 +13,23 @@ import {
 } from '@chakra-ui/react'
 import { FaCirclePlus } from 'react-icons/fa6'
 import { accountTypeCollection } from '@/shared/constants/accountTypeCollection'
-import { type GetAccountResponseItem } from '@/models/api/internal/backend/v1/response/account'
 import { type CreateAccountRequest } from '@/models/api/internal/backend/v1/request/account'
 import { type AccountType } from '@/models/constants/accountType'
 
 interface CreateAccountDialogCardProps {
-  allAccountsList: GetAccountResponseItem[]
-  handleCreateAccount: (request: CreateAccountRequest) => void
+  handleCreateAccount: (request: CreateAccountRequest) => Promise<void>
   isDialogOpen: boolean
   onDialogOpenChange: (open: boolean) => void
-  emailError: string | null
-  setEmailError: React.Dispatch<React.SetStateAction<string | null>> // setState の型 → React.Dispatch<React.SetStateAction<T>>
+  formError: string | null
+  setFormError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export const CreateAccountDialogCard = ({
-  allAccountsList,
   handleCreateAccount,
   isDialogOpen,
   onDialogOpenChange,
-  emailError,
-  setEmailError,
+  formError,
+  setFormError,
 }: CreateAccountDialogCardProps) => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault() // デフォルトのフォーム送信を防止
@@ -43,24 +40,12 @@ export const CreateAccountDialogCard = ({
     const passwordData = formData.get('password') as string
     const accountTypeData = formData.get('account_type') as AccountType
 
-    // .some() → 配列の中に、条件を満たすものが1つでもあるか確認
-    const isEmailDuplicated = allAccountsList.some((account) => account.email === emailData)
-
-    if (isEmailDuplicated) {
-      setEmailError('このメールアドレスは既に使用されています')
-      return
-    }
-
-    try {
-      handleCreateAccount({
-        name: nameData,
-        email: emailData,
-        password: passwordData,
-        account_type: accountTypeData,
-      })
-    } catch (error) {
-      console.error('アカウント作成失敗:', error)
-    }
+    void handleCreateAccount({
+      name: nameData,
+      email: emailData,
+      password: passwordData,
+      account_type: accountTypeData,
+    })
   }
 
   return (
@@ -84,6 +69,11 @@ export const CreateAccountDialogCard = ({
             <Dialog.Content borderRadius='4xl'>
               <Dialog.Header color='gray.600'>
                 <Dialog.Title>Account 新規登録</Dialog.Title>
+                {formError && (
+                  <Text mt={1} ml={3} fontSize={'sm'} color='red.500' role='alert'>
+                    {formError}
+                  </Text>
+                )}
               </Dialog.Header>
 
               <form onSubmit={handleSubmit}>
@@ -103,9 +93,7 @@ export const CreateAccountDialogCard = ({
                         />
                       </HStack>
                     </Field.Root>
-                    {/* invalid={…} → エラー状態であることを伝えるフラグ */}
-                    {/* emailError に何か入っていたら invalid を true（エラー状態）にする。入っていなかったら false（通常）にする */}
-                    <Field.Root invalid={Boolean(emailError)}>
+                    <Field.Root>
                       <HStack w='full'>
                         <Field.Label color='gray.600' fontWeight='bold' minW='50px'>
                           Email
@@ -115,16 +103,12 @@ export const CreateAccountDialogCard = ({
                           type='email'
                           borderColor='gray.400'
                           borderRadius='xl'
-                          // 入力欄の内容が変わったときにエラー表示を消す
-                          onChange={() => {
-                            setEmailError(null)
-                          }}
                           name='email'
+                          onChange={() => {
+                            setFormError(null)
+                          }}
                         />
                       </HStack>
-                      <Text ml={16}>
-                        {emailError && <Field.ErrorText>{emailError}</Field.ErrorText>}
-                      </Text>
                     </Field.Root>
                     <Field.Root>
                       <HStack w='full'>

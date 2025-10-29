@@ -10,7 +10,7 @@ import { useCreateAccountDialogHandler } from '@/features/Admin/Account/hooks/ha
 export const AdminAccountContainer = () => {
   const { data: current_account, isError, isPending } = useHealthcheckAuthQuery()
   const { data: allAccountsList = [] } = useAccountQuery() // dataがない場合は、空配列を入れる
-  const { handleCreateAccount, isDialogOpen, onDialogOpenChange, emailError, setEmailError } =
+  const { handleCreateAccount, isDialogOpen, onDialogOpenChange, formError, setFormError } =
     useCreateAccountDialogHandler()
 
   return useMemo(() => {
@@ -23,8 +23,8 @@ export const AdminAccountContainer = () => {
         handleCreateAccount={handleCreateAccount}
         isDialogOpen={isDialogOpen}
         onDialogOpenChange={onDialogOpenChange}
-        emailError={emailError}
-        setEmailError={setEmailError}
+        formError={formError}
+        setFormError={setFormError}
       />
     )
   }, [
@@ -35,7 +35,7 @@ export const AdminAccountContainer = () => {
     handleCreateAccount,
     isDialogOpen,
     onDialogOpenChange,
-    emailError,
-    setEmailError,
+    formError,
+    setFormError,
   ])
 }

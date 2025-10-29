@@ -27,20 +27,20 @@ const mockAllAccountsList = mockGetAccountResponseItem
 const mockHandleCreateAccount = vi.fn()
 const mockIsDialogOpen = true
 const mockOnDialogOpenChange = vi.fn()
-const mockEmailError = null
-const mockSetEmailError = vi.fn()
+const mockFormError = null
+const mockSetFormError = vi.fn()
 const defaultProps = {
   allAccountsList: mockAllAccountsList,
   handleCreateAccount: mockHandleCreateAccount,
   isDialogOpen: mockIsDialogOpen,
   onDialogOpenChange: mockOnDialogOpenChange,
-  emailError: mockEmailError,
-  setEmailError: mockSetEmailError,
+  formError: mockFormError,
+  setFormError: mockSetFormError,
 }
 
 const emailDuplicatedProps = {
   ...defaultProps,
-  emailError: 'このメールアドレスは既に使用されています',
+  formError: 'このメールアドレスは既に使用されています',
 }
 
 const mockName = 'テストユーザー3'
@@ -99,29 +99,11 @@ describe('CreateAccountDialogCard', () => {
     expect(mockHandleCreateAccount).toHaveBeenCalledWith(mockCreateAccountRequest)
   })
 
-  it('すでに登録済みのメールアドレスを送信しようとすると、setEmailError が呼ばれ、handleCreateAccount は呼ばれない', () => {
-    customRender(<CreateAccountDialogCard {...defaultProps} />)
-
-    fireEvent.change(screen.getByLabelText('表示名'), { target: { value: mockName } })
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'tes1@example.com' } })
-    fireEvent.change(screen.getByLabelText('Pass'), { target: { value: mockPassword } })
-    fireEvent.change(screen.getByLabelText('種別', { selector: 'select' }), {
-      target: { value: mockAccountType },
-    })
-
-    act(() => {
-      fireEvent.click(screen.getByRole('button', { name: '登録' }))
-    })
-
-    expect(mockSetEmailError).toHaveBeenCalledWith('このメールアドレスは既に使用されています')
-    expect(mockHandleCreateAccount).not.toHaveBeenCalled()
-  })
-
-  it('メール欄の内容が変わったら setEmailError(null) が呼ばれてメッセージ解除される', () => {
+  it('メール欄の内容が変わったら setFormError(null) が呼ばれてメッセージ解除される', () => {
     customRender(<CreateAccountDialogCard {...emailDuplicatedProps} />)
 
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: mockEmail } })
-    expect(mockSetEmailError).toHaveBeenCalledWith(null)
+    expect(mockSetFormError).toHaveBeenCalledWith(null)
   })
 
   it('パスワード欄に pattern/title 属性が付いている（8文字以上かつ大文字と数字を各1以上）', () => {

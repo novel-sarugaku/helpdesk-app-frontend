@@ -23,15 +23,15 @@ const mockAllAccountsList: GetAccountResponseItem[] = [
 const mockHandleCreateAccount = vi.fn()
 const mockIsDialogOpen = false
 const mockOnDialogOpenChange = vi.fn()
-const mockEmailError = null
-const mockSetEmailError = vi.fn()
+const mockFormError = null
+const mockSetFormError = vi.fn()
 const defaultProps = {
   allAccountsList: mockAllAccountsList,
   handleCreateAccount: mockHandleCreateAccount,
   isDialogOpen: mockIsDialogOpen,
   onDialogOpenChange: mockOnDialogOpenChange,
-  emailError: mockEmailError,
-  setEmailError: mockSetEmailError,
+  formError: mockFormError,
+  setFormError: mockSetFormError,
 }
 
 const headerRow = ['表示名', 'メールアドレス', 'アカウント種別']
@@ -71,12 +71,11 @@ describe('AccountTableCard', () => {
       expect(screen.getByTestId('mock-createAccountDialogCard')).toBeInTheDocument()
       expect(mockCreateAccountDialogCard.mock.calls[0][0]).toEqual(
         expect.objectContaining({
-          allAccountsList: mockAllAccountsList,
           handleCreateAccount: mockHandleCreateAccount,
           isDialogOpen: mockIsDialogOpen,
           onDialogOpenChange: mockOnDialogOpenChange,
-          emailError: mockEmailError,
-          setEmailError: mockSetEmailError,
+          formError: mockFormError,
+          setFormError: mockSetFormError,
         }),
       )
     })

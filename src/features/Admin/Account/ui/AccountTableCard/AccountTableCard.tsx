@@ -7,11 +7,11 @@ import { type CreateAccountRequest } from '@/models/api/internal/backend/v1/requ
 
 interface AccountTableCardProps {
   allAccountsList: GetAccountResponseItem[]
-  handleCreateAccount: (request: CreateAccountRequest) => void
+  handleCreateAccount: (request: CreateAccountRequest) => Promise<void>
   isDialogOpen: boolean
   onDialogOpenChange: (open: boolean) => void
-  emailError: string | null
-  setEmailError: React.Dispatch<React.SetStateAction<string | null>>
+  formError: string | null
+  setFormError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export const AccountTableCard = ({
@@ -19,8 +19,8 @@ export const AccountTableCard = ({
   handleCreateAccount,
   isDialogOpen,
   onDialogOpenChange,
-  emailError,
-  setEmailError,
+  formError,
+  setFormError,
 }: AccountTableCardProps) => {
   return (
     <>
@@ -30,12 +30,11 @@ export const AccountTableCard = ({
             Account 一覧
           </Text>
           <CreateAccountDialogCard
-            allAccountsList={allAccountsList}
             handleCreateAccount={handleCreateAccount}
             isDialogOpen={isDialogOpen}
             onDialogOpenChange={onDialogOpenChange}
-            emailError={emailError}
-            setEmailError={setEmailError}
+            formError={formError}
+            setFormError={setFormError}
           />
         </HStack>
 

@@ -43,14 +43,14 @@ const healthcheckAuthQuery = vi.spyOn(useHealthcheckAuthQuery, 'useHealthcheckAu
 const mockHandleCreateAccount = vi.fn()
 const mockIsDialogOpen = false
 const mockOnDialogOpenChange = vi.fn()
-const mockEmailError = null
-const mockSetEmailError = vi.fn()
+const mockFormError = null
+const mockSetFormError = vi.fn()
 vi.spyOn(useCreateAccountDialogHandler, 'useCreateAccountDialogHandler').mockReturnValue({
   handleCreateAccount: mockHandleCreateAccount,
   isDialogOpen: mockIsDialogOpen,
   onDialogOpenChange: mockOnDialogOpenChange,
-  emailError: mockEmailError,
-  setEmailError: mockSetEmailError,
+  formError: mockFormError,
+  setFormError: mockSetFormError,
 })
 
 beforeEach(() => {
@@ -76,8 +76,8 @@ describe('AdminAccountContainer', () => {
           handleCreateAccount: mockHandleCreateAccount,
           isDialogOpen: mockIsDialogOpen,
           onDialogOpenChange: mockOnDialogOpenChange,
-          emailError: mockEmailError,
-          setEmailError: mockSetEmailError,
+          formError: mockFormError,
+          setFormError: mockSetFormError,
         }),
       )
     })
