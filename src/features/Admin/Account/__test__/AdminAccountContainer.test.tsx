@@ -7,6 +7,7 @@ import { AdminAccountContainer } from '@/features/Admin/Account/AdminAccountCont
 import * as AdminAccountPresentational from '@/features/Admin/Account/AdminAccountPresentational'
 import * as LoadingPresentational from '@/shared/ui/Loading/LoadingPresentational'
 import * as useHealthcheckAuthQuery from '@/shared/hooks/queries/useHealthcheckAuthQuery'
+import * as useCreateAccountDialogHandler from '@/features/Admin/Account/hooks/handlers/useCreateAccountDialogHandler'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
 import { type AccountType } from '@/models/constants/accountType'
 
@@ -38,6 +39,20 @@ vi.mock('react-router-dom', async () => {
 const mockUserAccountType: AccountType = 'admin'
 const healthcheckAuthQuery = vi.spyOn(useHealthcheckAuthQuery, 'useHealthcheckAuthQuery')
 
+// Mocking the useCreateAccountDialogHandler hook
+const mockHandleCreateAccount = vi.fn()
+const mockIsDialogOpen = false
+const mockOnDialogOpenChange = vi.fn()
+const mockFormError = null
+const mockSetFormError = vi.fn()
+vi.spyOn(useCreateAccountDialogHandler, 'useCreateAccountDialogHandler').mockReturnValue({
+  handleCreateAccount: mockHandleCreateAccount,
+  isDialogOpen: mockIsDialogOpen,
+  onDialogOpenChange: mockOnDialogOpenChange,
+  formError: mockFormError,
+  setFormError: mockSetFormError,
+})
+
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -58,6 +73,11 @@ describe('AdminAccountContainer', () => {
         expect.objectContaining({
           userAccountType: mockUserAccountType,
           allAccountsList: [],
+          handleCreateAccount: mockHandleCreateAccount,
+          isDialogOpen: mockIsDialogOpen,
+          onDialogOpenChange: mockOnDialogOpenChange,
+          formError: mockFormError,
+          setFormError: mockSetFormError,
         }),
       )
     })
