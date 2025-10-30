@@ -3,6 +3,7 @@ import { AccountTableCard } from '@/features/Admin/Account/ui/AccountTableCard/A
 import { type AccountType } from '@/models/constants/accountType'
 import { type GetAccountResponseItem } from '@/models/api/internal/backend/v1/response/account'
 import { type CreateAccountRequest } from '@/models/api/internal/backend/v1/request/account'
+import { Toaster } from '@/components/ui/toaster'
 
 interface AdminAccountPresentationalProps {
   userAccountType: AccountType
@@ -12,6 +13,7 @@ interface AdminAccountPresentationalProps {
   onDialogOpenChange: (open: boolean) => void
   formError: string | null
   setFormError: React.Dispatch<React.SetStateAction<string | null>>
+  changeAccountStatus: (account: GetAccountResponseItem) => Promise<void>
 }
 
 export const AdminAccountPresentational = ({
@@ -22,10 +24,12 @@ export const AdminAccountPresentational = ({
   onDialogOpenChange,
   formError,
   setFormError,
+  changeAccountStatus,
 }: AdminAccountPresentationalProps) => {
   return (
     <>
       <Header userAccountType={userAccountType} />
+      <Toaster />
 
       <AccountTableCard
         allAccountsList={allAccountsList}
@@ -34,6 +38,7 @@ export const AdminAccountPresentational = ({
         onDialogOpenChange={onDialogOpenChange}
         formError={formError}
         setFormError={setFormError}
+        changeAccountStatus={changeAccountStatus}
       />
     </>
   )
