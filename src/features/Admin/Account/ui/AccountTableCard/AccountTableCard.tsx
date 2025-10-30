@@ -1,4 +1,4 @@
-import { Container, Text, Table, HStack } from '@chakra-ui/react'
+import { Container, Text, Table, HStack, Button, Show } from '@chakra-ui/react'
 
 import { accountTypeToJa } from '@/shared/logic/format/labelFormatters'
 import { CreateAccountDialogCard } from '@/features/Admin/Account/ui/AccountCreateDialogCard/CreateAccountDialogCard'
@@ -12,6 +12,7 @@ interface AccountTableCardProps {
   onDialogOpenChange: (open: boolean) => void
   formError: string | null
   setFormError: React.Dispatch<React.SetStateAction<string | null>>
+  changeAccountStatus: (account: GetAccountResponseItem) => Promise<void>
 }
 
 export const AccountTableCard = ({
@@ -21,6 +22,7 @@ export const AccountTableCard = ({
   onDialogOpenChange,
   formError,
   setFormError,
+  changeAccountStatus,
 }: AccountTableCardProps) => {
   return (
     <>
@@ -50,6 +52,9 @@ export const AccountTableCard = ({
               <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
                 アカウント種別
               </Table.ColumnHeader>
+              <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
+                利用状態（停止/再開）
+              </Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -60,6 +65,36 @@ export const AccountTableCard = ({
                   <Table.Cell>{account.name}</Table.Cell>
                   <Table.Cell>{account.email}</Table.Cell>
                   <Table.Cell>{accountTypeToJa(account.account_type)}</Table.Cell>
+                  <Table.Cell>
+                    <Show when={account.is_suspended}>
+                      <Button
+                        size='xs'
+                        color={'gray.700'}
+                        bgColor={'green.200'}
+                        w={'50%'}
+                        borderRadius={'10px'}
+                        onClick={() => {
+                          void changeAccountStatus(account)
+                        }}
+                      >
+                        再開
+                      </Button>
+                    </Show>
+                    <Show when={!account.is_suspended}>
+                      <Button
+                        size='xs'
+                        color={'gray.700'}
+                        bgColor={'red.200'}
+                        w={'50%'}
+                        borderRadius={'10px'}
+                        onClick={() => {
+                          void changeAccountStatus(account)
+                        }}
+                      >
+                        停止
+                      </Button>
+                    </Show>
+                  </Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

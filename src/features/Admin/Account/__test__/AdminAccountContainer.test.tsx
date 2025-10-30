@@ -8,6 +8,7 @@ import * as AdminAccountPresentational from '@/features/Admin/Account/AdminAccou
 import * as LoadingPresentational from '@/shared/ui/Loading/LoadingPresentational'
 import * as useHealthcheckAuthQuery from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import * as useCreateAccountDialogHandler from '@/features/Admin/Account/hooks/handlers/useCreateAccountDialogHandler'
+import * as useUpdateAccountHandler from '@/features/Admin/Account/hooks/handlers/useUpdateAccountHandler'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
 import { type AccountType } from '@/models/constants/accountType'
 
@@ -53,6 +54,12 @@ vi.spyOn(useCreateAccountDialogHandler, 'useCreateAccountDialogHandler').mockRet
   setFormError: mockSetFormError,
 })
 
+// Mocking the useUpdateAccountHandler hook
+const mockChangeAccountStatus = vi.fn()
+vi.spyOn(useUpdateAccountHandler, 'useUpdateAccountHandler').mockReturnValue({
+  changeAccountStatus: mockChangeAccountStatus,
+})
+
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -78,6 +85,7 @@ describe('AdminAccountContainer', () => {
           onDialogOpenChange: mockOnDialogOpenChange,
           formError: mockFormError,
           setFormError: mockSetFormError,
+          changeAccountStatus: mockChangeAccountStatus,
         }),
       )
     })

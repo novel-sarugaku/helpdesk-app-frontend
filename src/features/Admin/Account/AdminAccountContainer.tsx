@@ -6,12 +6,14 @@ import { AdminAccountPresentational } from '@/features/Admin/Account/AdminAccoun
 import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import { useAccountQuery } from '@/features/Admin/Account/hooks/queries/useAccountQuery'
 import { useCreateAccountDialogHandler } from '@/features/Admin/Account/hooks/handlers/useCreateAccountDialogHandler'
+import { useUpdateAccountHandler } from '@/features/Admin/Account/hooks/handlers/useUpdateAccountHandler'
 
 export const AdminAccountContainer = () => {
   const { data: current_account, isError, isPending } = useHealthcheckAuthQuery()
   const { data: allAccountsList = [] } = useAccountQuery() // dataがない場合は、空配列を入れる
   const { handleCreateAccount, isDialogOpen, onDialogOpenChange, formError, setFormError } =
     useCreateAccountDialogHandler()
+  const { changeAccountStatus } = useUpdateAccountHandler()
 
   return useMemo(() => {
     if (isPending) return <LoadingPresentational />
@@ -25,6 +27,7 @@ export const AdminAccountContainer = () => {
         onDialogOpenChange={onDialogOpenChange}
         formError={formError}
         setFormError={setFormError}
+        changeAccountStatus={changeAccountStatus}
       />
     )
   }, [
@@ -37,5 +40,6 @@ export const AdminAccountContainer = () => {
     onDialogOpenChange,
     formError,
     setFormError,
+    changeAccountStatus,
   ])
 }

@@ -6,3 +6,8 @@ export type CreateAccountRequest = {
   password: string
   account_type: AccountType
 }
+
+export type UpdateAccountRequest = {
+  id: number
+  is_suspended: boolean
+}

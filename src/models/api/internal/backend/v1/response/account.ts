@@ -5,6 +5,7 @@ export type GetAccountResponseItem = {
   name: string
   email: string
   account_type: AccountType
+  is_suspended: boolean
 }
 
 export type CreateAccountResponse = {
@@ -12,4 +13,12 @@ export type CreateAccountResponse = {
   name: string
   email: string
   account_type: AccountType
+}
+
+export type UpdateAccountResponse = {
+  id: number
+  name: string
+  email: string
+  account_type: AccountType
+  is_suspended: boolean
 }

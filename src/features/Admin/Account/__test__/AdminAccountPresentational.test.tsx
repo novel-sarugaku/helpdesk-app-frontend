@@ -15,6 +15,7 @@ const mockAllAccountsList: GetAccountResponseItem[] = [
     name: 'テストユーザー',
     email: 'test@example.com',
     account_type: 'admin',
+    is_suspended: false,
   },
 ]
 const mockHandleCreateAccount = vi.fn()
@@ -22,6 +23,7 @@ const mockIsDialogOpen = false
 const mockOnDialogOpenChange = vi.fn()
 const mockFormError = null
 const mockSetFormError = vi.fn()
+const mockChangeAccountStatus = vi.fn()
 const defaultProps = {
   userAccountType: mockUserAccountType,
   allAccountsList: mockAllAccountsList,
@@ -30,6 +32,7 @@ const defaultProps = {
   onDialogOpenChange: mockOnDialogOpenChange,
   formError: mockFormError,
   setFormError: mockSetFormError,
+  changeAccountStatus: mockChangeAccountStatus,
 }
 
 // Mocking the Header component
@@ -69,6 +72,7 @@ describe('AdminAccountPresentational', () => {
           onDialogOpenChange: mockOnDialogOpenChange,
           formError: mockFormError,
           setFormError: mockSetFormError,
+          changeAccountStatus: mockChangeAccountStatus,
         }),
       )
     })
