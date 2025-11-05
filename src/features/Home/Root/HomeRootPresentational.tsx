@@ -1,4 +1,5 @@
 import { Container, Table, Text } from '@chakra-ui/react'
+import { Link } from '@chakra-ui/react'
 
 import { Header } from '@/components/organisms/Header'
 import { formatCreatedAt } from '@/shared/logic/format/dateFormatters'
@@ -51,7 +52,16 @@ export const HomeRootPresentational = ({
             {allTicketsList.map((ticket) => (
               <Table.Row key={ticket.id}>
                 <Table.Cell>{formatCreatedAt(ticket.created_at)}</Table.Cell>
-                <Table.Cell>{ticket.title}</Table.Cell>
+                <Table.Cell>
+                  <Link
+                    variant='underline'
+                    href={`/ticket/${String(ticket.id)}`}
+                    colorPalette='teal'
+                    data-testid='ticket-id-link'
+                  >
+                    {ticket.title}
+                  </Link>
+                </Table.Cell>
                 <Table.Cell>{publicationTypeToJa(ticket.is_public)}</Table.Cell>
                 <Table.Cell>{ticketStatusToJa(ticket.status)}</Table.Cell>
                 <Table.Cell>{ticket.staff}</Table.Cell>

@@ -101,5 +101,22 @@ describe('HomeRootPresentational', () => {
         }
       }
     })
+
+    it('表示されているチケットのタイトルのリンク遷移先が正しい', () => {
+      customRender(<HomeRootPresentational {...defaultProps} />)
+
+      expect(screen.getByRole('link', { name: 'テストチケット1' })).toHaveAttribute(
+        'href',
+        '/ticket/1',
+      )
+      expect(screen.getByRole('link', { name: 'テストチケット2' })).toHaveAttribute(
+        'href',
+        '/ticket/2',
+      )
+      expect(screen.getByRole('link', { name: 'テストチケット2' })).toHaveAttribute(
+        'href',
+        '/ticket/2',
+      )
+    })
   })
 })
