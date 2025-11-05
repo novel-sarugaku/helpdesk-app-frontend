@@ -14,12 +14,14 @@ const mockGetAccountResponse: GetAccountResponseItem[] = [
     name: 'テストユーザー1',
     email: 'tes1@example.com',
     account_type: mockUserAccountType,
+    is_suspended: false,
   },
   {
     id: 2,
     name: 'テストユーザー2',
     email: 'test2@example.com',
     account_type: mockUserAccountType,
+    is_suspended: false,
   },
 ]
 

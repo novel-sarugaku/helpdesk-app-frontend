@@ -35,7 +35,6 @@ vi.mock('react-router-dom', async () => {
 // Mocking the useHealthcheckAuthQuery hook
 const mockUserAccountType: AccountType = 'admin'
 const healthcheckAuthQuery = vi.spyOn(useHealthcheckAuthQuery, 'useHealthcheckAuthQuery')
-
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -55,6 +54,7 @@ describe('HomeRootContainer', () => {
       expect(mockHomeRootPresentational.mock.calls[0][0]).toEqual(
         expect.objectContaining({
           userAccountType: mockUserAccountType,
+          allTicketsList: [],
         }),
       )
     })
