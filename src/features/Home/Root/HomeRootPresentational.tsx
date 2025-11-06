@@ -2,7 +2,7 @@ import { Container, Table, Text } from '@chakra-ui/react'
 import { Link } from '@chakra-ui/react'
 
 import { Header } from '@/components/organisms/Header'
-import { formatCreatedAt } from '@/shared/logic/format/dateFormatters'
+import { formatDateStringToYearMonthDay } from '@/shared/logic/format/dateFormatters'
 import { publicationTypeToJa, ticketStatusToJa } from '@/shared/logic/format/labelFormatters'
 import { type AccountType } from '@/models/constants/accountType'
 import { type GetTicketResponseItem } from '@/models/api/internal/backend/v1/response/ticket'
@@ -11,6 +11,8 @@ interface HomeRootPresentationalProps {
   userAccountType: AccountType
   allTicketsList: GetTicketResponseItem[]
 }
+
+const headerTitles = ['質問日', 'タイトル', '公開状況', 'ステータス', '質問者', 'サポート担当']
 
 export const HomeRootPresentational = ({
   userAccountType,
@@ -28,30 +30,17 @@ export const HomeRootPresentational = ({
         <Table.Root>
           <Table.Header>
             <Table.Row bg={'gray.100'}>
-              <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
-                質問日
-              </Table.ColumnHeader>
-              <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
-                タイトル
-              </Table.ColumnHeader>
-              <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
-                公開状況
-              </Table.ColumnHeader>
-              <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
-                ステータス
-              </Table.ColumnHeader>
-              <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
-                質問者
-              </Table.ColumnHeader>
-              <Table.ColumnHeader fontWeight={'bold'} color={'gray.600'}>
-                サポート担当
-              </Table.ColumnHeader>
+              {headerTitles.map((title) => (
+                <Table.ColumnHeader key={title} fontWeight={'bold'} color={'gray.600'}>
+                  {title}
+                </Table.ColumnHeader>
+              ))}
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {allTicketsList.map((ticket) => (
               <Table.Row key={ticket.id}>
-                <Table.Cell>{formatCreatedAt(ticket.created_at)}</Table.Cell>
+                <Table.Cell>{formatDateStringToYearMonthDay(ticket.created_at)}</Table.Cell>
                 <Table.Cell>
                   <Link
                     variant='underline'

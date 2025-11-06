@@ -1,4 +1,4 @@
-export const formatCreatedAt = (date: string): string => {
+export const formatDateStringToYearMonthDay = (date: string): string => {
   const convertedCreatedAt = new Date(date)
   const year = String(convertedCreatedAt.getFullYear())
   // String().padStart(2, '0') → 文字列の長さが2文字になるように左側を0で埋める。例：'1' → '01', '10' → '10'
