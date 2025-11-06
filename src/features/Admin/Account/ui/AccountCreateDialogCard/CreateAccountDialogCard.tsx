@@ -117,7 +117,7 @@ export const CreateAccountDialogCard = ({
                         </Field.Label>
                         <Input
                           required
-                          type='string'
+                          type='password'
                           borderColor='gray.400'
                           borderRadius='xl'
                           pattern='(?=.*[A-Z])(?=.*\d).{8,}'
