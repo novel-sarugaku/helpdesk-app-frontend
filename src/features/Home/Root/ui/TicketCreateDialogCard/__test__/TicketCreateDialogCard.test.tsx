@@ -27,15 +27,35 @@ const headers = ['公開設定', 'タイトル', '詳細']
 
 describe('TicketCreateDialogCard', () => {
   describe('正常系', () => {
-    it('チケット登録ダイアログ上に表示されるべきテキストが表示され、textarea 要素に required が存在する', () => {
+    it('チケット登録ダイアログ上に表示されるべきテキストが表示される', () => {
       customRender(<TicketCreateDialogCard {...defaultProps} />)
 
       headers.forEach((label) => {
         expect(screen.getByText(label)).toBeInTheDocument()
       })
+    })
+
+    it('公開設定 のデフォルトは「公開」', () => {
+      customRender(<TicketCreateDialogCard {...defaultProps} />)
+
+      expect(screen.getByRole('radio', { name: '公開' })).toBeChecked()
+    })
+
+    it('タイトル/詳細 の textarea 要素に required が存在する', () => {
+      customRender(<TicketCreateDialogCard {...defaultProps} />)
 
       expect(screen.getByLabelText('タイトル')).toBeRequired()
       expect(screen.getByLabelText('詳細')).toBeRequired()
+    })
+
+    it('タイトル の textarea 要素に maxLength/placeholder が存在する', () => {
+      customRender(<TicketCreateDialogCard {...defaultProps} />)
+
+      expect(screen.getByLabelText('タイトル')).toHaveAttribute('maxLength', '255')
+      expect(screen.getByLabelText('タイトル')).toHaveAttribute(
+        'placeholder',
+        '最大255文字まで入力可能です',
+      )
     })
 
     it('公開設定/タイトル/詳細 を入力して送信すると、handleCreateTicket にリクエストが渡る', () => {
@@ -52,16 +72,6 @@ describe('TicketCreateDialogCard', () => {
 
       expect(mockHandleCreateTicket).toHaveBeenCalledTimes(1)
       expect(mockHandleCreateTicket).toHaveBeenCalledWith(mockCreateTicketRequest)
-    })
-
-    it('タイトル入力欄に maxLength/placeholder 属性が付いている', () => {
-      customRender(<TicketCreateDialogCard {...defaultProps} />)
-
-      expect(screen.getByLabelText('タイトル')).toHaveAttribute('maxLength', '255')
-      expect(screen.getByLabelText('タイトル')).toHaveAttribute(
-        'placeholder',
-        '最大255文字まで入力可能です',
-      )
     })
   })
 })

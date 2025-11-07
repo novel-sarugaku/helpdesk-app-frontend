@@ -57,7 +57,7 @@ describe('useCreateTicketDialogCardHandler', () => {
       expect(result.current.isDialogOpen).toBe(false)
     })
 
-    it('登録に成功した場合、ダイアログを閉じる', async () => {
+    it('登録に成功した場合、成功メッセージでトーストを作成し、ダイアログを閉じる', async () => {
       const { result } = customRenderHook(() => useCreateTicketDialogCardHandler())
 
       act(() => {
@@ -77,7 +77,7 @@ describe('useCreateTicketDialogCardHandler', () => {
       expect(result.current.isDialogOpen).toBe(false)
     })
 
-    it('登録に失敗し、response.data.detail が存在する場合、その内容をでトーストを作成し、ダイアログは閉じない', async () => {
+    it('登録に失敗し、response.data.detail が存在する場合、その内容でトーストを作成し、ダイアログは閉じない', async () => {
       const mockAxiosError = {
         isAxiosError: true, // error.isAxiosError === true にする
         // error.response.data.detail をセット

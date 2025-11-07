@@ -12,7 +12,7 @@ import {
   RadioGroup,
 } from '@chakra-ui/react'
 import { FaCirclePlus } from 'react-icons/fa6'
-import { publicationCollection } from '@/shared/constants/publicationOptions'
+import { publicationLabelList } from '@/shared/constants/publicationLabel'
 import { type CreateTicketRequest } from '@/models/api/internal/backend/v1/request/ticket'
 
 interface TicketCreateDialogCardProps {
@@ -31,9 +31,10 @@ export const TicketCreateDialogCard = ({
 
     const formData = new FormData(event.target as HTMLFormElement)
     const titleData = formData.get('title') as string
-    const isPublicStringData = formData.get('is_public') as string // .get()の戻り値は FormDataEntryValue | null。FormDataEntryValue は string か File のどちらか
+    // .get()の戻り値は FormDataEntryValue | null。FormDataEntryValue は string か File のどちらか
+    // isPublicStringData が 'public' なら isPublicData は true、そうでなければ false
+    const isPublicData = (formData.get('is_public') as string) === 'public'
     const descriptionData = formData.get('description') as string
-    const isPublicData = isPublicStringData === 'true' // isPublicStringData が 'true'なら isPublicData は true、そうでなければ false
 
     void handleCreateTicket({
       title: titleData,
@@ -73,9 +74,9 @@ export const TicketCreateDialogCard = ({
                         <Field.Label color='gray.600' fontWeight='bold' minW='60px'>
                           公開設定
                         </Field.Label>
-                        <RadioGroup.Root defaultValue='true' name='is_public'>
+                        <RadioGroup.Root defaultValue='public' name='is_public'>
                           <HStack gap='6'>
-                            {publicationCollection.map((item) => (
+                            {publicationLabelList.map((item) => (
                               <RadioGroup.Item
                                 key={item.value}
                                 value={item.value}

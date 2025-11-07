@@ -10,9 +10,10 @@ import {
   Icon,
   HStack,
   Select,
+  createListCollection,
 } from '@chakra-ui/react'
 import { FaCirclePlus } from 'react-icons/fa6'
-import { accountTypeCollection } from '@/shared/constants/accountTypeCollection'
+import { accountTypeLabelList } from '@/shared/constants/accountTypeLabel'
 import { type CreateAccountRequest } from '@/models/api/internal/backend/v1/request/account'
 import { type AccountType } from '@/models/constants/accountType'
 
@@ -47,6 +48,10 @@ export const CreateAccountDialogCard = ({
       account_type: accountTypeData,
     })
   }
+
+  const accountTypeCollection = createListCollection({
+    items: accountTypeLabelList,
+  })
 
   return (
     <>
