@@ -4,9 +4,22 @@ import { screen, within } from '@testing-library/react'
 import { customRender } from '@/tests/helpers/customRender'
 import { HomeRootPresentational } from '@/features/Home/Root/HomeRootPresentational'
 import * as Header from '@/components/organisms/Header'
+import * as TicketCreateDialogCard from '@/features/Home/Root/ui/TicketCreateDialogCard/TicketCreateDialogCard'
 import { type AccountType } from '@/models/constants/accountType'
 import { type GetTicketResponseItem } from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
+
+// Mocking the Header component
+const mockHeader = vi.spyOn(Header, 'Header').mockImplementation(() => {
+  return <div data-testid='mock-header'>Mocked Header</div>
+})
+
+// Mocking the TicketCreateDialogCard component
+const mockTicketCreateDialogCard = vi
+  .spyOn(TicketCreateDialogCard, 'TicketCreateDialogCard')
+  .mockImplementation(() => {
+    return <div data-testid='mock-ticketCreateDialogCard'>Mocked TicketCreateDialogCard</div>
+  })
 
 const mockUserAccountType: AccountType = 'staff'
 const mockTicketStatusTypeIsStart: TicketStatusType = 'start'
@@ -40,10 +53,18 @@ const mockAllTicketsList: GetTicketResponseItem[] = [
     created_at: '2025-11-03T00:00:00Z',
   },
 ]
+const mockHandleCreateTicket = vi.fn()
+const mockIsDialogOpen = false
+const mockOnDialogOpenChange = vi.fn()
 const defaultProps = {
   userAccountType: mockUserAccountType,
   allTicketsList: mockAllTicketsList,
+  handleCreateTicket: mockHandleCreateTicket,
+  isDialogOpen: mockIsDialogOpen,
+  onDialogOpenChange: mockOnDialogOpenChange,
 }
+
+const userAccountTypes: AccountType[] = ['admin', 'staff', 'supporter']
 
 const headerRow = ['質問日', 'タイトル', '公開状況', 'ステータス', '質問者', 'サポート担当']
 const accountRows = [
@@ -59,11 +80,6 @@ const accountRows = [
   ],
 ]
 
-// Mocking the Header component
-const mockHeader = vi.spyOn(Header, 'Header').mockImplementation(() => {
-  return <div data-testid='mock-header'>Mocked Header</div>
-})
-
 describe('HomeRootPresentational', () => {
   describe('正常系', () => {
     it('正しいpropsでHeaderコンポーネントが表示される', () => {
@@ -75,6 +91,29 @@ describe('HomeRootPresentational', () => {
           userAccountType: mockUserAccountType,
         }),
       )
+    })
+
+    it('アカウントタイプが社員の場合、正しいpropsでTicketCreateDialogCardPropsコンポーネントが表示される', () => {
+      customRender(<HomeRootPresentational {...defaultProps} />)
+
+      expect(screen.getByTestId('mock-ticketCreateDialogCard')).toBeInTheDocument()
+      expect(mockTicketCreateDialogCard.mock.calls[0][0]).toEqual(
+        expect.objectContaining({
+          handleCreateTicket: mockHandleCreateTicket,
+          isDialogOpen: mockIsDialogOpen,
+          onDialogOpenChange: mockOnDialogOpenChange,
+        }),
+      )
+    })
+
+    it('アカウントタイプが社員以外の場合、TicketCreateDialogCardPropsコンポーネントは表示されない', () => {
+      userAccountTypes.forEach((type) => {
+        if (type === 'staff') return
+
+        customRender(<HomeRootPresentational {...defaultProps} userAccountType={type} />)
+
+        expect(screen.queryByTestId('mock-ticketCreateDialogCard')).not.toBeInTheDocument()
+      })
     })
 
     it('表示されるべきテキストやデータが表示される', () => {
