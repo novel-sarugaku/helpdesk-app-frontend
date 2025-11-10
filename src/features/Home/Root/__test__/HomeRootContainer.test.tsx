@@ -7,6 +7,7 @@ import { HomeRootContainer } from '@/features/Home/Root/HomeRootContainer'
 import * as HomeRootPresentational from '@/features/Home/Root/HomeRootPresentational'
 import * as LoadingPresentational from '@/shared/ui/Loading/LoadingPresentational'
 import * as useHealthcheckAuthQuery from '@/shared/hooks/queries/useHealthcheckAuthQuery'
+import * as useCreateTicketDialogCardHandler from '@/features/Home/Root/hooks/handlers/useCreateTicketDialogCardHandler'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
 import { type AccountType } from '@/models/constants/accountType'
 
@@ -35,6 +36,17 @@ vi.mock('react-router-dom', async () => {
 // Mocking the useHealthcheckAuthQuery hook
 const mockUserAccountType: AccountType = 'admin'
 const healthcheckAuthQuery = vi.spyOn(useHealthcheckAuthQuery, 'useHealthcheckAuthQuery')
+
+// Mocking the useCreateTicketDialogCardHandler hook
+const mockHandleCreateTicket = vi.fn()
+const mockIsDialogOpen = false
+const mockOnDialogOpenChange = vi.fn()
+vi.spyOn(useCreateTicketDialogCardHandler, 'useCreateTicketDialogCardHandler').mockReturnValue({
+  handleCreateTicket: mockHandleCreateTicket,
+  isDialogOpen: mockIsDialogOpen,
+  onDialogOpenChange: mockOnDialogOpenChange,
+})
+
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -55,6 +67,9 @@ describe('HomeRootContainer', () => {
         expect.objectContaining({
           userAccountType: mockUserAccountType,
           allTicketsList: [],
+          handleCreateTicket: mockHandleCreateTicket,
+          isDialogOpen: mockIsDialogOpen,
+          onDialogOpenChange: mockOnDialogOpenChange,
         }),
       )
     })

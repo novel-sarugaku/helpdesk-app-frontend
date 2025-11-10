@@ -9,3 +9,13 @@ export type GetTicketResponseItem = {
   supporter: string
   created_at: string
 }
+
+export type CreateTicketResponse = {
+  id: number
+  title: string
+  is_public: boolean
+  status: TicketStatusType
+  description: string
+  staff: number
+  created_at: string
+}

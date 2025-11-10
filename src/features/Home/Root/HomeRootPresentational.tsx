@@ -1,15 +1,20 @@
-import { Container, Table, Text } from '@chakra-ui/react'
+import { Container, HStack, Spacer, Table, Text, Show } from '@chakra-ui/react'
 import { Link } from '@chakra-ui/react'
 
 import { Header } from '@/components/organisms/Header'
+import { TicketCreateDialogCard } from '@/features/Home/Root/ui/TicketCreateDialogCard/TicketCreateDialogCard'
 import { formatDateStringToYearMonthDay } from '@/shared/logic/format/dateFormatters'
 import { publicationTypeToJa, ticketStatusToJa } from '@/shared/logic/format/labelFormatters'
 import { type AccountType } from '@/models/constants/accountType'
 import { type GetTicketResponseItem } from '@/models/api/internal/backend/v1/response/ticket'
+import { type CreateTicketRequest } from '@/models/api/internal/backend/v1/request/ticket'
 
 interface HomeRootPresentationalProps {
   userAccountType: AccountType
   allTicketsList: GetTicketResponseItem[]
+  handleCreateTicket: (request: CreateTicketRequest) => Promise<void>
+  isDialogOpen: boolean
+  onDialogOpenChange: (open: boolean) => void
 }
 
 const headerTitles = ['質問日', 'タイトル', '公開状況', 'ステータス', '質問者', 'サポート担当']
@@ -17,15 +22,30 @@ const headerTitles = ['質問日', 'タイトル', '公開状況', 'ステータ
 export const HomeRootPresentational = ({
   userAccountType,
   allTicketsList,
+  handleCreateTicket,
+  isDialogOpen,
+  onDialogOpenChange,
 }: HomeRootPresentationalProps) => {
   return (
     <>
       <Header userAccountType={userAccountType} />
 
       <Container my={9}>
-        <Text mb={3} color='gray.500' fontSize='2xl' fontWeight='bold'>
-          Ticket
-        </Text>
+        <HStack>
+          <Text mb={3} color='gray.500' fontSize='2xl' fontWeight='bold'>
+            Ticket
+          </Text>
+
+          <Spacer />
+
+          <Show when={userAccountType === 'staff'}>
+            <TicketCreateDialogCard
+              handleCreateTicket={handleCreateTicket}
+              isDialogOpen={isDialogOpen}
+              onDialogOpenChange={onDialogOpenChange}
+            />
+          </Show>
+        </HStack>
 
         <Table.Root>
           <Table.Header>
