@@ -1,10 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 
 import * as client from '../client'
-import { getTickets, createTicket } from '@/services/internal/backend/v1/ticket'
+import { getTickets, getTicket, createTicket } from '@/services/internal/backend/v1/ticket'
 import { type CreateTicketRequest } from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
+  type GetTicketDetailResponse,
   type CreateTicketResponse,
 } from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
@@ -30,6 +31,16 @@ const mockGetTicketResponse: GetTicketResponseItem[] = [
     created_at: '2025-011-01',
   },
 ]
+
+const mockGetTicketDetailResponse: GetTicketDetailResponse = {
+  id: 1,
+  title: 'テストチケット1',
+  is_public: true,
+  status: mockTicketStatusType,
+  description: 'テスト詳細',
+  supporter: 'テストサポート担当者2',
+  created_at: '2025-011-01',
+}
 
 const mockCreateTicketRequest: CreateTicketRequest = {
   title: 'テストタイトル',
@@ -73,6 +84,37 @@ describe('getTickets', () => {
       await expect(getTickets()).rejects.toThrow(mockError)
 
       expect(mockClientGet).toHaveBeenCalledTimes(1)
+    })
+  })
+})
+
+// チケット詳細取得
+describe('getTicket', () => {
+  describe('正常系', () => {
+    it('正しいURLでGETし、dataを返す', async () => {
+      const mockClientGet = vi
+        .spyOn(client.internalBackendV1Client, 'get')
+        .mockResolvedValue({ data: mockGetTicketDetailResponse })
+
+      const result = await getTicket(1)
+
+      expect(mockClientGet).toHaveBeenCalledTimes(1)
+      expect(mockClientGet).toHaveBeenCalledWith('/ticket/1')
+      expect(result).toEqual(mockGetTicketDetailResponse)
+    })
+  })
+
+  describe('異常系', () => {
+    it('GETに失敗した場合、エラーを返す', async () => {
+      const mockError = new Error('チケット詳細の取得に失敗しました')
+      const mockClientGet = vi
+        .spyOn(client.internalBackendV1Client, 'get')
+        .mockRejectedValue(mockError)
+
+      await expect(getTicket(1)).rejects.toThrow(mockError)
+
+      expect(mockClientGet).toHaveBeenCalledTimes(1)
+      expect(mockClientGet).toHaveBeenCalledWith('/ticket/1')
     })
   })
 })
