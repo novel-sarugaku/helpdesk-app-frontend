@@ -10,6 +10,16 @@ export type GetTicketResponseItem = {
   created_at: string
 }
 
+export type GetTicketDetailResponse = {
+  id: number
+  title: string
+  is_public: boolean
+  status: TicketStatusType
+  description: string
+  supporter: string
+  created_at: string
+}
+
 export type CreateTicketResponse = {
   id: number
   title: string

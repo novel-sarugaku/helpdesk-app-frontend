@@ -6,3 +6,11 @@ export const formatDateStringToYearMonthDay = (date: string): string => {
   const day = String(convertedCreatedAt.getDate()).padStart(2, '0')
   return `${year} ${month} ${day}`
 }
+
+export const formatDateStringToYearMonthDaySlash = (date: string): string => {
+  const convertedCreatedAt = new Date(date)
+  const year = String(convertedCreatedAt.getFullYear())
+  const month = String(convertedCreatedAt.getMonth() + 1).padStart(2, '0')
+  const day = String(convertedCreatedAt.getDate()).padStart(2, '0')
+  return `${year} / ${month} / ${day}`
+}
