@@ -1,26 +1,26 @@
 import { Container, Table, Text } from '@chakra-ui/react'
 
 import { formatDateStringToYearMonthDayAndTime } from '@/shared/logic/format/dateFormatters'
-import { type GetTicketDetailResponse } from '@/models/api/internal/backend/v1/response/ticket'
+import { type GetTicketHistoryResponseItem } from '@/models/api/internal/backend/v1/response/ticket'
 
 interface TicketHistoriesTableProps {
-  ticketData: GetTicketDetailResponse
+  ticketHistories: GetTicketHistoryResponseItem[]
 }
 
-export const TicketHistoriesTable = ({ ticketData }: TicketHistoriesTableProps) => {
+export const TicketHistoriesTable = ({ ticketHistories }: TicketHistoriesTableProps) => {
   return (
     <>
       <Container my={10}>
         <Table.Root borderTop='solid 1px' borderColor='gray.200'>
           <Table.Body>
-            {ticketData.ticket_histories.length === 0 ? (
+            {ticketHistories.length === 0 ? (
               <Table.Row>
                 <Table.Cell>
                   <Text color='gray.500'>対応履歴はありません</Text>
                 </Table.Cell>
               </Table.Row>
             ) : (
-              ticketData.ticket_histories.map((item) => (
+              ticketHistories.map((item) => (
                 <Table.Row key={item.id}>
                   {/* whiteSpace='pre-line' → \n は改行として反映 */}
                   <Table.Cell w='120px' whiteSpace='pre-line' textAlign={'center'}>

@@ -100,7 +100,7 @@ describe('TicketIdPresentational', () => {
       expect(screen.getByTestId('mock-ticketHistoriesTable')).toBeInTheDocument()
       expect(mockTicketHistoriesTable.mock.calls[0][0]).toEqual(
         expect.objectContaining({
-          ticketData: mockGetTicketDetailResponse,
+          ticketHistories: mockGetTicketHistoryResponseItem,
         }),
       )
     })

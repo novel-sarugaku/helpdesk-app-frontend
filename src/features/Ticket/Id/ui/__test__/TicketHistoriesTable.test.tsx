@@ -3,13 +3,8 @@ import { screen } from '@testing-library/react'
 
 import { customRender } from '@/tests/helpers/customRender'
 import { TicketHistoriesTable } from '@/features/Ticket/Id/ui/TicketHistoriesTable'
-import {
-  type GetTicketDetailResponse,
-  type GetTicketHistoryResponseItem,
-} from '@/models/api/internal/backend/v1/response/ticket'
-import { type TicketStatusType } from '@/models/constants/ticketStatusType'
+import { type GetTicketHistoryResponseItem } from '@/models/api/internal/backend/v1/response/ticket'
 
-const mockTicketStatusType: TicketStatusType = 'start'
 const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [
   {
     id: 1,
@@ -26,23 +21,13 @@ const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [
     created_at: '2025-11-02T00:00:00',
   },
 ]
-const mockGetTicketDetailResponse: GetTicketDetailResponse = {
-  id: 1,
-  title: 'テストタイトル',
-  is_public: true,
-  status: mockTicketStatusType,
-  description: 'テスト詳細',
-  supporter: 'テストサポート担当者1',
-  created_at: '2025-11-01T00:00:00',
-  ticket_histories: mockGetTicketHistoryResponseItem,
-}
+
 const defaultProps = {
-  ticketData: mockGetTicketDetailResponse,
+  ticketHistories: mockGetTicketHistoryResponseItem,
 }
 
 const noTicketHistoryProps = {
-  ...defaultProps,
-  ticketData: { ...defaultProps.ticketData, ticket_histories: [] },
+  ticketHistories: [],
 }
 
 //  \s+ → 改行も含めた空白

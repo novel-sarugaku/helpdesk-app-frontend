@@ -176,7 +176,7 @@ export const TicketIdPresentational = ({
           </VStack>
         </Box>
 
-        <TicketHistoriesTable ticketData={ticketData} />
+        <TicketHistoriesTable ticketHistories={ticketData.ticket_histories} />
       </Container>
     </>
   )
