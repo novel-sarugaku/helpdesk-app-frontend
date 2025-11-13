@@ -5,6 +5,7 @@ import { getTickets, getTicket, createTicket } from '@/services/internal/backend
 import { type CreateTicketRequest } from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
+  type GetTicketHistoryResponseItem,
   type GetTicketDetailResponse,
   type CreateTicketResponse,
 } from '@/models/api/internal/backend/v1/response/ticket'
@@ -32,6 +33,22 @@ const mockGetTicketResponse: GetTicketResponseItem[] = [
   },
 ]
 
+const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [
+  {
+    id: 1,
+    ticket: 1,
+    action_user: 'テスト社員1',
+    action_description: 'テスト対応履歴1',
+    created_at: '2025-011-01',
+  },
+  {
+    id: 2,
+    ticket: 1,
+    action_user: 'テスト社員1',
+    action_description: 'テスト対応履歴2',
+    created_at: '2025-011-01',
+  },
+]
 const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   id: 1,
   title: 'テストチケット1',
@@ -40,6 +57,7 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   description: 'テスト詳細',
   supporter: 'テストサポート担当者2',
   created_at: '2025-011-01',
+  ticket_histories: mockGetTicketHistoryResponseItem,
 }
 
 const mockCreateTicketRequest: CreateTicketRequest = {

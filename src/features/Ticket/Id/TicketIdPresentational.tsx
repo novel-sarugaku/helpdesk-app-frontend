@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { Container, Text, Box, HStack, VStack, Textarea } from '@chakra-ui/react'
 
 import { Header } from '@/components/organisms/Header'
+import { TicketHistoriesTable } from '@/features/Ticket/Id/ui/TicketHistoriesTable'
 import { formatDateStringToYearMonthDaySlash } from '@/shared/logic/format/dateFormatters'
 import { ticketStatusTypeLabelList } from '@/shared/constants/ticketStatusTypeLabel'
 import { type GetTicketDetailResponse } from '@/models/api/internal/backend/v1/response/ticket'
@@ -174,6 +175,8 @@ export const TicketIdPresentational = ({
             </VStack>
           </VStack>
         </Box>
+
+        <TicketHistoriesTable ticketHistories={ticketData.ticket_histories} />
       </Container>
     </>
   )

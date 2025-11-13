@@ -10,6 +10,14 @@ export type GetTicketResponseItem = {
   created_at: string
 }
 
+export type GetTicketHistoryResponseItem = {
+  id: number
+  ticket: number
+  action_user: string
+  action_description: string
+  created_at: string
+}
+
 export type GetTicketDetailResponse = {
   id: number
   title: string
@@ -18,6 +26,7 @@ export type GetTicketDetailResponse = {
   description: string
   supporter: string
   created_at: string
+  ticket_histories: GetTicketHistoryResponseItem[]
 }
 
 export type CreateTicketResponse = {

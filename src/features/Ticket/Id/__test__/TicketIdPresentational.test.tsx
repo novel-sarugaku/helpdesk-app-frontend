@@ -4,11 +4,31 @@ import { screen } from '@testing-library/react'
 import { customRender } from '@/tests/helpers/customRender'
 import { TicketIdPresentational } from '@/features/Ticket/Id/TicketIdPresentational'
 import * as Header from '@/components/organisms/Header'
-import { type GetTicketDetailResponse } from '@/models/api/internal/backend/v1/response/ticket'
+import * as TicketHistoriesTable from '@/features/Ticket/Id/ui/TicketHistoriesTable'
+import {
+  type GetTicketDetailResponse,
+  type GetTicketHistoryResponseItem,
+} from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
 import { type AccountType } from '@/models/constants/accountType'
 
 const mockTicketStatusType: TicketStatusType = 'start'
+const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [
+  {
+    id: 1,
+    ticket: 1,
+    action_user: 'テスト社員1',
+    action_description: 'テスト対応履歴1',
+    created_at: '2025-011-01',
+  },
+  {
+    id: 2,
+    ticket: 1,
+    action_user: 'テスト社員1',
+    action_description: 'テスト対応履歴2',
+    created_at: '2025-011-01',
+  },
+]
 const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   id: 1,
   title: 'テストタイトル',
@@ -17,6 +37,7 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   description: 'テスト詳細',
   supporter: 'テストサポート担当者1',
   created_at: '2025-11-01T00:00:00Z',
+  ticket_histories: mockGetTicketHistoryResponseItem,
 }
 const mockUserAccountType: AccountType = 'staff'
 const defaultProps = {
@@ -53,6 +74,13 @@ const mockHeader = vi.spyOn(Header, 'Header').mockImplementation(() => {
   return <div data-testid='mock-header'>Mocked Header</div>
 })
 
+// Mocking the TicketHistoriesTable component
+const mockTicketHistoriesTable = vi
+  .spyOn(TicketHistoriesTable, 'TicketHistoriesTable')
+  .mockImplementation(() => {
+    return <div data-testid='mock-ticketHistoriesTable'>Mocked TicketHistoriesTable</div>
+  })
+
 describe('TicketIdPresentational', () => {
   describe('正常系', () => {
     it('正しいpropsでHeaderコンポーネントが表示される', () => {
@@ -62,6 +90,17 @@ describe('TicketIdPresentational', () => {
       expect(mockHeader.mock.calls[0][0]).toEqual(
         expect.objectContaining({
           userAccountType: mockUserAccountType,
+        }),
+      )
+    })
+
+    it('正しいpropsでTicketHistoriesTableコンポーネントが表示される', () => {
+      customRender(<TicketIdPresentational {...defaultProps} />)
+
+      expect(screen.getByTestId('mock-ticketHistoriesTable')).toBeInTheDocument()
+      expect(mockTicketHistoriesTable.mock.calls[0][0]).toEqual(
+        expect.objectContaining({
+          ticketHistories: mockGetTicketHistoryResponseItem,
         }),
       )
     })
