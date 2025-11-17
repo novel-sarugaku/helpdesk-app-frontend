@@ -5,7 +5,6 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { customRenderHook } from '@/tests/helpers/customRenderHook'
 import { useAssignSupporterMutation } from '@/features/Ticket/Id/hooks/mutations/useAssignSupporterMutation'
-import { Tickets } from '@/features/Home/Root/hooks/queries/queryKeys'
 import { Ticket } from '@/features/Ticket/Id/hooks/queries/queryKeys'
 import * as assignSupporterService from '@/services/internal/backend/v1/ticket'
 import { type UpdateTicketResponse } from '@/models/api/internal/backend/v1/response/ticket'
@@ -43,10 +42,7 @@ describe('useAssignSupporterMutation', () => {
       })
 
       expect(result.current.mockAssignSupporterMutation.data).toEqual(mockUpdateTicketResponse)
-      expect(mockInvalidateQueries).toHaveBeenCalledTimes(2)
-      expect(mockInvalidateQueries).toHaveBeenCalledWith({
-        queryKey: Tickets.all,
-      })
+      expect(mockInvalidateQueries).toHaveBeenCalledTimes(1)
       expect(mockInvalidateQueries).toHaveBeenCalledWith({
         queryKey: Ticket.detail(mockTicketId),
       })
