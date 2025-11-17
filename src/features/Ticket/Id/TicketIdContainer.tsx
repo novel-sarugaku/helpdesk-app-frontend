@@ -7,12 +7,14 @@ import { TicketIdPresentational } from '@/features/Ticket/Id/TicketIdPresentatio
 import { LoadingPresentational } from '@/shared/ui/Loading/LoadingPresentational'
 import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import { useTicketDetailQuery } from '@/features/Ticket/Id/hooks/queries/useTicketDetailQuery'
+import { useAssignSupporterHandler } from '@/features/Ticket/Id/hooks/handlers/useAssignSupporterHandler'
 
 export const TicketIdContainer = () => {
   const { data, isPending, isError } = useHealthcheckAuthQuery()
   const { id } = useParams()
   const ticketId = Number(id)
   const { data: ticketData, isPending: getTicketPending } = useTicketDetailQuery(ticketId)
+  const { handleAssignSupporter } = useAssignSupporterHandler(ticketId)
 
   // ヘルスチェックで isPending の場合は、ローディング画面へ遷移
   if (isPending) return <LoadingPresentational />
@@ -29,5 +31,11 @@ export const TicketIdContainer = () => {
     return <Navigate to='/' />
   }
 
-  return <TicketIdPresentational userAccountType={data.account_type} ticketData={ticketData} />
+  return (
+    <TicketIdPresentational
+      userAccountType={data.account_type}
+      ticketData={ticketData}
+      handleAssignSupporter={handleAssignSupporter}
+    />
+  )
 }

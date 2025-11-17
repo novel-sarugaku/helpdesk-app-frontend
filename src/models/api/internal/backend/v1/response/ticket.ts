@@ -13,7 +13,7 @@ export type GetTicketResponseItem = {
 export type GetTicketHistoryResponseItem = {
   id: number
   ticket: number
-  action_user: string
+  action_user: string | null
   action_description: string
   created_at: string
 }
@@ -24,7 +24,7 @@ export type GetTicketDetailResponse = {
   is_public: boolean
   status: TicketStatusType
   description: string
-  supporter: string
+  supporter: string | null
   created_at: string
   ticket_histories: GetTicketHistoryResponseItem[]
 }
@@ -37,4 +37,10 @@ export type CreateTicketResponse = {
   description: string
   staff: number
   created_at: string
+}
+
+export type UpdateTicketResponse = {
+  id: number
+  status: TicketStatusType
+  supporter: string
 }
