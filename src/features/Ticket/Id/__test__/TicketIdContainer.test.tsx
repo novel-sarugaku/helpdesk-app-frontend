@@ -12,10 +12,30 @@ import * as TicketIdPresentational from '@/features/Ticket/Id/TicketIdPresentati
 import * as LoadingPresentational from '@/shared/ui/Loading/LoadingPresentational'
 import { type HealthcheckAuthResponse } from '@/models/api/internal/backend/v1/response/healthcheck'
 import { type AccountType } from '@/models/constants/accountType'
-import { type GetTicketDetailResponse } from '@/models/api/internal/backend/v1/response/ticket'
+import {
+  type GetTicketDetailResponse,
+  type GetTicketHistoryResponseItem,
+} from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
+import * as useAssignSupporterHandler from '@/features/Ticket/Id/hooks/handlers/useAssignSupporterHandler'
 
 const mockTicketStatusType: TicketStatusType = 'start'
+const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [
+  {
+    id: 1,
+    ticket: 1,
+    action_user: 'テスト社員1',
+    action_description: 'テスト対応履歴1',
+    created_at: '2025-011-01',
+  },
+  {
+    id: 2,
+    ticket: 1,
+    action_user: 'テスト社員1',
+    action_description: 'テスト対応履歴2',
+    created_at: '2025-011-01',
+  },
+]
 const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   id: 1,
   title: 'テストタイトル',
@@ -24,6 +44,7 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   description: 'テスト詳細',
   supporter: 'テストサポート担当者1',
   created_at: '2025-11-01T00:00:00Z',
+  ticket_histories: mockGetTicketHistoryResponseItem,
 }
 
 // Mocking the TicketIdPresentational component
@@ -81,6 +102,12 @@ mockTicketDetailQuery.mockReturnValue({
   data: mockGetTicketDetailResponse,
 } as unknown as UseQueryResult<GetTicketDetailResponse>)
 
+// Mocking the useAssignSupporterHandler hook
+const mockHandleAssignSupporter = vi.fn()
+vi.spyOn(useAssignSupporterHandler, 'useAssignSupporterHandler').mockReturnValue({
+  handleAssignSupporter: mockHandleAssignSupporter,
+})
+
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -97,6 +124,7 @@ describe('TicketIdContainer', () => {
         expect.objectContaining({
           userAccountType: mockUserAccountType,
           ticketData: mockGetTicketDetailResponse,
+          handleAssignSupporter: mockHandleAssignSupporter,
         }),
       )
       expect(screen.getByTestId('mock-ticketIdPresentational')).toBeInTheDocument()

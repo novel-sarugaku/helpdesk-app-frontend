@@ -29,7 +29,7 @@ export const TicketHistoriesTable = ({ ticketHistories }: TicketHistoriesTablePr
                     </Text>
                   </Table.Cell>
                   <Table.Cell w='200px' textAlign={'center'}>
-                    <Text color='gray.500'>{item.action_user}</Text>
+                    <Text color='gray.500'>{item.action_user ?? 'system'}</Text>
                   </Table.Cell>
                   <Table.Cell textAlign={'start'}>
                     <Text color='gray.500'>{item.action_description}</Text>

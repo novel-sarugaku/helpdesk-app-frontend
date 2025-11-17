@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { Container, Text, Box, HStack, VStack, Textarea } from '@chakra-ui/react'
+import { Container, Text, Box, HStack, VStack, Textarea, Button, Show } from '@chakra-ui/react'
 
 import { Header } from '@/components/organisms/Header'
 import { TicketHistoriesTable } from '@/features/Ticket/Id/ui/TicketHistoriesTable'
@@ -11,20 +11,39 @@ import { type AccountType } from '@/models/constants/accountType'
 interface TicketIdPresentationalProps {
   ticketData: GetTicketDetailResponse
   userAccountType: AccountType
+  handleAssignSupporter: () => Promise<void>
 }
 
 export const TicketIdPresentational = ({
   ticketData,
   userAccountType,
+  handleAssignSupporter,
 }: TicketIdPresentationalProps) => {
   return (
     <>
       <Header userAccountType={userAccountType} />
 
       <Container my={9}>
-        <Text color='gray.500' fontWeight='bold' fontSize='xl'>
-          ID：{ticketData.id}
-        </Text>
+        <HStack w='100%'>
+          <Text color='gray.500' fontWeight='bold' fontSize='xl' w='130px'>
+            ID：{ticketData.id}
+          </Text>
+          <Show when={userAccountType == 'supporter' && ticketData.supporter === null}>
+            <Button
+              color='gray.500'
+              bg='white'
+              border='solid 2px'
+              borderColor='green.400'
+              borderRadius='10px'
+              w='15%'
+              onClick={() => {
+                void handleAssignSupporter()
+              }}
+            >
+              担当者になる
+            </Button>
+          </Show>
+        </HStack>
 
         <Box ml={5} mt={5}>
           <VStack align='start'>

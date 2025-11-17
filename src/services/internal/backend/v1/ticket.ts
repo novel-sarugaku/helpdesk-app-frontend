@@ -4,6 +4,7 @@ import {
   type GetTicketResponseItem,
   type GetTicketDetailResponse,
   type CreateTicketResponse,
+  type UpdateTicketResponse,
 } from '@/models/api/internal/backend/v1/response/ticket'
 
 // チケット全件取得
@@ -23,5 +24,13 @@ export const getTicket = async (ticketId: number): Promise<GetTicketDetailRespon
 // チケット登録
 export const createTicket = async (request: CreateTicketRequest): Promise<CreateTicketResponse> => {
   const response = await internalBackendV1Client.post<CreateTicketResponse>('/ticket', request)
+  return response.data
+}
+
+// チケット更新（サポート担当者登録設定）
+export const assignSupporter = async (ticketId: number): Promise<UpdateTicketResponse> => {
+  const response = await internalBackendV1Client.put<UpdateTicketResponse>(
+    `/ticket/${String(ticketId)}/assign`,
+  )
   return response.data
 }

@@ -1,13 +1,19 @@
 import { describe, it, expect, vi } from 'vitest'
 
 import * as client from '../client'
-import { getTickets, getTicket, createTicket } from '@/services/internal/backend/v1/ticket'
+import {
+  getTickets,
+  getTicket,
+  createTicket,
+  assignSupporter,
+} from '@/services/internal/backend/v1/ticket'
 import { type CreateTicketRequest } from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
   type GetTicketHistoryResponseItem,
   type GetTicketDetailResponse,
   type CreateTicketResponse,
+  type UpdateTicketResponse,
 } from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
 
@@ -74,6 +80,13 @@ const mockCreateTicketResponse: CreateTicketResponse = {
   description: 'テスト詳細',
   staff: 1,
   created_at: '2025-011-01',
+}
+
+const mockTicketStatusTypeAssigned: TicketStatusType = 'assigned'
+const mockUpdateTicketResponse: UpdateTicketResponse = {
+  id: 1,
+  status: mockTicketStatusTypeAssigned,
+  supporter: 'テストサポート担当者2',
 }
 
 // チケット全件取得
@@ -163,6 +176,36 @@ describe('createTicket', () => {
       await expect(createTicket(mockCreateTicketRequest)).rejects.toThrow(mockError)
 
       expect(mockClientCreate).toHaveBeenCalledTimes(1)
+    })
+  })
+})
+
+// チケット更新（サポート担当者登録設定）
+describe('assignSupporter', () => {
+  describe('正常系', () => {
+    it('正しいURLでPUTし、dataを返す', async () => {
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockResolvedValue({ data: mockUpdateTicketResponse })
+
+      const result = await assignSupporter(1)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
+      expect(mockClientUpdate).toHaveBeenCalledWith('/ticket/1/assign')
+      expect(result).toEqual(mockUpdateTicketResponse)
+    })
+  })
+
+  describe('異常系', () => {
+    it('PUTに失敗した場合、エラーを返す', async () => {
+      const mockError = new Error('担当の割り当てに失敗しました')
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockRejectedValue(mockError)
+
+      await expect(assignSupporter(1)).rejects.toThrow(mockError)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
     })
   })
 })

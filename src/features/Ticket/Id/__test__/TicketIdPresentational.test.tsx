@@ -40,9 +40,21 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   ticket_histories: mockGetTicketHistoryResponseItem,
 }
 const mockUserAccountType: AccountType = 'staff'
+const mockHandleAssignSupporter = vi.fn()
 const defaultProps = {
   ticketData: mockGetTicketDetailResponse,
   userAccountType: mockUserAccountType,
+  handleAssignSupporter: mockHandleAssignSupporter,
+}
+
+const mockUserAccountTypeIsSupporter: AccountType = 'supporter'
+const noSupporterProps = {
+  ...defaultProps,
+  ticketData: {
+    ...defaultProps.ticketData,
+    supporter: null,
+  },
+  userAccountType: mockUserAccountTypeIsSupporter,
 }
 
 const privateTicketProps = {
@@ -111,6 +123,18 @@ describe('TicketIdPresentational', () => {
       ticketDetails.forEach((ticketDetail) => {
         expect(screen.getByText(ticketDetail)).toBeInTheDocument()
       })
+    })
+
+    it('チケットのサポート担当者が設定されている場合、「担当者になる」ボタンは表示されない', () => {
+      customRender(<TicketIdPresentational {...defaultProps} />)
+
+      expect(screen.queryByRole('button', { name: '担当者になる' })).not.toBeInTheDocument()
+    })
+
+    it('チケットのサポート担当者が未設定であり、ログインしているアカウントタイプがサポート担当者の場合、「担当者になる」ボタンが表示される', () => {
+      customRender(<TicketIdPresentational {...noSupporterProps} />)
+
+      expect(screen.getByRole('button', { name: '担当者になる' })).toBeInTheDocument()
     })
 
     it('ticketData.is_public の場合、公開設定の「公開」がアクティブになる', () => {
