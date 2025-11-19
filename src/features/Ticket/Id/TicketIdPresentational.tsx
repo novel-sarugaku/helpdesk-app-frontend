@@ -181,15 +181,15 @@ export const TicketIdPresentational = ({
                         data-testid={`status-${value}`}
                         data-active={ticketData.status === value}
                         // 担当サポーターと管理者以外は、ボタンを押せない
-                        disabled={userAccountType != 'admin' && !ticketData.is_own_ticket}
+                        disabled={!(userAccountType == 'admin' || ticketData.is_own_ticket)}
                         _disabled={{
                           opacity: 1, // 過剰に透けるのを防ぐ
                         }}
-                        // 担当サポーターと管理者以外は、カーソルを合わせた際、禁止マークが表示される
+                        // 担当サポーターと管理者は、カーソルを合わせた際に指マークが表示され、それ以外は禁止マークが表示される
                         cursor={
-                          userAccountType != 'admin' && !ticketData.is_own_ticket
-                            ? 'not-allowed'
-                            : 'pointer'
+                          userAccountType == 'admin' || ticketData.is_own_ticket
+                            ? 'pointer'
+                            : 'not-allowed'
                         }
                         onClick={() => {
                           void handleUpdateTicketStatus(value)
