@@ -36,6 +36,7 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   description: 'テスト詳細',
   supporter: 'テストサポート担当者2',
   created_at: '2025-011-01',
+  is_own_ticket: true,
   ticket_histories: mockGetTicketHistoryResponseItem,
 }
 
@@ -60,6 +61,7 @@ describe('useTicketDetailQuery', () => {
         description: 'テスト詳細',
         supporter: 'テストサポート担当者2',
         created_at: '2025-011-01',
+        is_own_ticket: true,
         ticket_histories: [
           {
             id: 2,

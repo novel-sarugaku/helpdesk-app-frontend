@@ -6,8 +6,12 @@ import {
   getTicket,
   createTicket,
   assignSupporter,
+  updateTicketStatus,
 } from '@/services/internal/backend/v1/ticket'
-import { type CreateTicketRequest } from '@/models/api/internal/backend/v1/request/ticket'
+import {
+  type CreateTicketRequest,
+  type UpdateTicketStatusRequest,
+} from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
   type GetTicketHistoryResponseItem,
@@ -63,6 +67,7 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   description: 'テスト詳細',
   supporter: 'テストサポート担当者2',
   created_at: '2025-011-01',
+  is_own_ticket: true,
   ticket_histories: mockGetTicketHistoryResponseItem,
 }
 
@@ -87,6 +92,11 @@ const mockUpdateTicketResponse: UpdateTicketResponse = {
   id: 1,
   status: mockTicketStatusTypeAssigned,
   supporter: 'テストサポート担当者2',
+}
+
+const mockNewStatus: TicketStatusType = 'assigned'
+const mockUpdateTicketStatusRequest: UpdateTicketStatusRequest = {
+  status: mockNewStatus,
 }
 
 // チケット全件取得
@@ -204,6 +214,39 @@ describe('assignSupporter', () => {
         .mockRejectedValue(mockError)
 
       await expect(assignSupporter(1)).rejects.toThrow(mockError)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
+    })
+  })
+})
+
+// チケット更新（ステータス変更）
+describe('updateTicketStatus', () => {
+  describe('正常系', () => {
+    it('正しいURL/ボディでPUTし、dataを返す', async () => {
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockResolvedValue({ data: mockUpdateTicketResponse })
+
+      const result = await updateTicketStatus(1, mockUpdateTicketStatusRequest)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
+      expect(mockClientUpdate).toHaveBeenCalledWith(
+        '/ticket/1/status',
+        mockUpdateTicketStatusRequest,
+      )
+      expect(result).toEqual(mockUpdateTicketResponse)
+    })
+  })
+
+  describe('異常系', () => {
+    it('PUTに失敗した場合、エラーを返す', async () => {
+      const mockError = new Error('ステータス更新に失敗しました')
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockRejectedValue(mockError)
+
+      await expect(updateTicketStatus(1, mockUpdateTicketStatusRequest)).rejects.toThrow(mockError)
 
       expect(mockClientUpdate).toHaveBeenCalledTimes(1)
     })

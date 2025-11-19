@@ -1,5 +1,6 @@
-import { describe, it, vi, expect } from 'vitest'
+import { describe, it, vi, expect, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { customRender } from '@/tests/helpers/customRender'
 import { TicketIdPresentational } from '@/features/Ticket/Id/TicketIdPresentational'
@@ -37,14 +38,17 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   description: 'テスト詳細',
   supporter: 'テストサポート担当者1',
   created_at: '2025-11-01T00:00:00Z',
+  is_own_ticket: true,
   ticket_histories: mockGetTicketHistoryResponseItem,
 }
-const mockUserAccountType: AccountType = 'staff'
+const mockUserAccountType: AccountType = 'supporter'
 const mockHandleAssignSupporter = vi.fn()
+const mockHandleUpdateTicketStatus = vi.fn()
 const defaultProps = {
   ticketData: mockGetTicketDetailResponse,
   userAccountType: mockUserAccountType,
   handleAssignSupporter: mockHandleAssignSupporter,
+  handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
 }
 
 const mockUserAccountTypeIsSupporter: AccountType = 'supporter'
@@ -60,6 +64,11 @@ const noSupporterProps = {
 const privateTicketProps = {
   ...defaultProps,
   ticketData: { ...defaultProps.ticketData, is_public: false },
+}
+
+const notOwnTicketProp = {
+  ...defaultProps,
+  ticketData: { ...defaultProps.ticketData, is_own_ticket: false },
 }
 
 const ticketDetails = [
@@ -92,6 +101,10 @@ const mockTicketHistoriesTable = vi
   .mockImplementation(() => {
     return <div data-testid='mock-ticketHistoriesTable'>Mocked TicketHistoriesTable</div>
   })
+
+beforeEach(() => {
+  vi.clearAllMocks()
+})
 
 describe('TicketIdPresentational', () => {
   describe('正常系', () => {
@@ -160,6 +173,26 @@ describe('TicketIdPresentational', () => {
       expect(screen.getByTestId('status-in_progress')).toHaveAttribute('data-active', 'false')
       expect(screen.getByTestId('status-resolved')).toHaveAttribute('data-active', 'false')
       expect(screen.getByTestId('status-closed')).toHaveAttribute('data-active', 'false')
+    })
+
+    it('チケットのサポート担当/管理者アカウントの場合、ステータスボタンを押下すると、handleUpdateTicketStatus が呼ばれる', async () => {
+      customRender(<TicketIdPresentational {...defaultProps} />)
+
+      await userEvent.click(screen.getByRole('button', { name: '対応中' }))
+
+      expect(mockHandleUpdateTicketStatus).toHaveBeenCalledTimes(1)
+      expect(screen.getByRole('button', { name: '対応中' })).not.toBeDisabled()
+      expect(screen.getByRole('button', { name: '対応中' })).toHaveStyle('cursor: pointer')
+    })
+
+    it('チケットのサポート担当/管理者以外のアカウントの場合、ステータスボタンは disabled で押下しても handleUpdateTicketStatus は呼ばれない', async () => {
+      customRender(<TicketIdPresentational {...notOwnTicketProp} />)
+
+      await userEvent.click(screen.getByRole('button', { name: '対応中' }))
+
+      expect(mockHandleUpdateTicketStatus).toHaveBeenCalledTimes(0)
+      expect(screen.getByRole('button', { name: '対応中' })).toBeDisabled()
+      expect(screen.getByRole('button', { name: '対応中' })).toHaveStyle('cursor: not-allowed')
     })
   })
 })

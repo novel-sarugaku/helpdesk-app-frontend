@@ -18,6 +18,7 @@ import {
 } from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
 import * as useAssignSupporterHandler from '@/features/Ticket/Id/hooks/handlers/useAssignSupporterHandler'
+import * as useUpdateTicketStatusHandler from '@/features/Ticket/Id/hooks/handlers/useUpdateTicketStatusHandler'
 
 const mockTicketStatusType: TicketStatusType = 'start'
 const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [
@@ -44,6 +45,7 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
   description: 'テスト詳細',
   supporter: 'テストサポート担当者1',
   created_at: '2025-11-01T00:00:00Z',
+  is_own_ticket: true,
   ticket_histories: mockGetTicketHistoryResponseItem,
 }
 
@@ -108,6 +110,12 @@ vi.spyOn(useAssignSupporterHandler, 'useAssignSupporterHandler').mockReturnValue
   handleAssignSupporter: mockHandleAssignSupporter,
 })
 
+// Mocking the useUpdateTicketStatusHandler hook
+const mockHandleUpdateTicketStatus = vi.fn()
+vi.spyOn(useUpdateTicketStatusHandler, 'useUpdateTicketStatusHandler').mockReturnValue({
+  handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
+})
+
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -125,6 +133,7 @@ describe('TicketIdContainer', () => {
           userAccountType: mockUserAccountType,
           ticketData: mockGetTicketDetailResponse,
           handleAssignSupporter: mockHandleAssignSupporter,
+          handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
         }),
       )
       expect(screen.getByTestId('mock-ticketIdPresentational')).toBeInTheDocument()
