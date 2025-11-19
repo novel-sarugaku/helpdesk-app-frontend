@@ -1,5 +1,8 @@
 import { internalBackendV1Client } from './client'
-import { type CreateTicketRequest } from '@/models/api/internal/backend/v1/request/ticket'
+import {
+  type CreateTicketRequest,
+  type UpdateTicketStatusRequest,
+} from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
   type GetTicketDetailResponse,
@@ -31,6 +34,18 @@ export const createTicket = async (request: CreateTicketRequest): Promise<Create
 export const assignSupporter = async (ticketId: number): Promise<UpdateTicketResponse> => {
   const response = await internalBackendV1Client.put<UpdateTicketResponse>(
     `/ticket/${String(ticketId)}/assign`,
+  )
+  return response.data
+}
+
+// チケット更新（ステータス変更）
+export const updateTicketStatus = async (
+  ticketId: number,
+  request: UpdateTicketStatusRequest,
+): Promise<UpdateTicketResponse> => {
+  const response = await internalBackendV1Client.put<UpdateTicketResponse>(
+    `/ticket/${String(ticketId)}/status`,
+    request,
   )
   return response.data
 }

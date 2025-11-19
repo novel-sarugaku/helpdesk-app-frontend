@@ -26,6 +26,7 @@ export type GetTicketDetailResponse = {
   description: string
   supporter: string | null
   created_at: string
+  is_own_ticket: boolean
   ticket_histories: GetTicketHistoryResponseItem[]
 }
 

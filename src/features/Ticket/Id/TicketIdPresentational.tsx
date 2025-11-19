@@ -7,17 +7,20 @@ import { formatDateStringToYearMonthDaySlash } from '@/shared/logic/format/dateF
 import { ticketStatusTypeLabelList } from '@/shared/constants/ticketStatusTypeLabel'
 import { type GetTicketDetailResponse } from '@/models/api/internal/backend/v1/response/ticket'
 import { type AccountType } from '@/models/constants/accountType'
+import { type TicketStatusType } from '@/models/constants/ticketStatusType'
 
 interface TicketIdPresentationalProps {
   ticketData: GetTicketDetailResponse
   userAccountType: AccountType
   handleAssignSupporter: () => Promise<void>
+  handleUpdateTicketStatus: (newStatus: TicketStatusType) => Promise<void>
 }
 
 export const TicketIdPresentational = ({
   ticketData,
   userAccountType,
   handleAssignSupporter,
+  handleUpdateTicketStatus,
 }: TicketIdPresentationalProps) => {
   return (
     <>
@@ -166,7 +169,7 @@ export const TicketIdPresentational = ({
                     // DOMを増やしたくないけど複数要素をグループ化したい時に使う。
                     // 他の要素だとデフォルトで余白などプロパティがついてしまうため、つけたくない時は便利（レイアウトに影響を与えない）
                     <Fragment key={value}>
-                      <Box
+                      <Button
                         p={2}
                         my={1}
                         borderRadius='10px'
@@ -177,11 +180,25 @@ export const TicketIdPresentational = ({
                         w='230px'
                         data-testid={`status-${value}`}
                         data-active={ticketData.status === value}
+                        // 担当サポーターと管理者以外は、ボタンを押せない
+                        disabled={userAccountType != 'admin' && !ticketData.is_own_ticket}
+                        _disabled={{
+                          opacity: 1, // 過剰に透けるのを防ぐ
+                        }}
+                        // 担当サポーターと管理者以外は、カーソルを合わせた際、禁止マークが表示される
+                        cursor={
+                          userAccountType != 'admin' && !ticketData.is_own_ticket
+                            ? 'not-allowed'
+                            : 'pointer'
+                        }
+                        onClick={() => {
+                          void handleUpdateTicketStatus(value)
+                        }}
                       >
                         <Text color={'gray.500'} fontSize={'sm'}>
                           {label}
                         </Text>
-                      </Box>
+                      </Button>
                       {/* 最後の要素の後ろには棒を出さない */}
                       {/* index → 今、何番目を処理しているか */}
                       {index < ticketStatusTypeLabelList.length - 1 && (
