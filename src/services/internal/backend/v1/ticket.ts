@@ -38,6 +38,14 @@ export const assignSupporter = async (ticketId: number): Promise<UpdateTicketRes
   return response.data
 }
 
+// チケット更新（サポート担当者解除設定）
+export const unassignSupporter = async (ticketId: number): Promise<UpdateTicketResponse> => {
+  const response = await internalBackendV1Client.put<UpdateTicketResponse>(
+    `/ticket/${String(ticketId)}/unassign`,
+  )
+  return response.data
+}
+
 // チケット更新（ステータス変更）
 export const updateTicketStatus = async (
   ticketId: number,

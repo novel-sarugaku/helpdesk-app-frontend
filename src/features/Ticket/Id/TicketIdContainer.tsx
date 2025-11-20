@@ -8,6 +8,7 @@ import { LoadingPresentational } from '@/shared/ui/Loading/LoadingPresentational
 import { useHealthcheckAuthQuery } from '@/shared/hooks/queries/useHealthcheckAuthQuery'
 import { useTicketDetailQuery } from '@/features/Ticket/Id/hooks/queries/useTicketDetailQuery'
 import { useAssignSupporterHandler } from '@/features/Ticket/Id/hooks/handlers/useAssignSupporterHandler'
+import { useUnassignSupporterHandler } from '@/features/Ticket/Id/hooks/handlers/useUnassignSupporterHandler'
 import { useUpdateTicketStatusHandler } from '@/features/Ticket/Id/hooks/handlers/useUpdateTicketStatusHandler'
 
 export const TicketIdContainer = () => {
@@ -16,6 +17,7 @@ export const TicketIdContainer = () => {
   const ticketId = Number(id)
   const { data: ticketData, isPending: getTicketPending } = useTicketDetailQuery(ticketId)
   const { handleAssignSupporter } = useAssignSupporterHandler(ticketId)
+  const { handleUnassignSupporter } = useUnassignSupporterHandler(ticketId)
   const { handleUpdateTicketStatus } = useUpdateTicketStatusHandler(ticketId)
 
   // ヘルスチェックで isPending の場合は、ローディング画面へ遷移
@@ -38,6 +40,7 @@ export const TicketIdContainer = () => {
       userAccountType={data.account_type}
       ticketData={ticketData}
       handleAssignSupporter={handleAssignSupporter}
+      handleUnassignSupporter={handleUnassignSupporter}
       handleUpdateTicketStatus={handleUpdateTicketStatus}
     />
   )

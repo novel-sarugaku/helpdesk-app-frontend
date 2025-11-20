@@ -13,6 +13,7 @@ interface TicketIdPresentationalProps {
   ticketData: GetTicketDetailResponse
   userAccountType: AccountType
   handleAssignSupporter: () => Promise<void>
+  handleUnassignSupporter: () => Promise<void>
   handleUpdateTicketStatus: (newStatus: TicketStatusType) => Promise<void>
 }
 
@@ -20,6 +21,7 @@ export const TicketIdPresentational = ({
   ticketData,
   userAccountType,
   handleAssignSupporter,
+  handleUnassignSupporter,
   handleUpdateTicketStatus,
 }: TicketIdPresentationalProps) => {
   return (
@@ -44,6 +46,21 @@ export const TicketIdPresentational = ({
               }}
             >
               担当者になる
+            </Button>
+          </Show>
+          <Show when={ticketData.is_own_ticket}>
+            <Button
+              color='gray.500'
+              bg='white'
+              border='solid 2px'
+              borderColor='green.400'
+              borderRadius='10px'
+              w='15%'
+              onClick={() => {
+                void handleUnassignSupporter()
+              }}
+            >
+              担当を離れる
             </Button>
           </Show>
         </HStack>
