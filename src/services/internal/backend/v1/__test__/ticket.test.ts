@@ -6,6 +6,7 @@ import {
   getTicket,
   createTicket,
   assignSupporter,
+  unassignSupporter,
   updateTicketStatus,
 } from '@/services/internal/backend/v1/ticket'
 import {
@@ -88,15 +89,28 @@ const mockCreateTicketResponse: CreateTicketResponse = {
 }
 
 const mockTicketStatusTypeAssigned: TicketStatusType = 'assigned'
-const mockUpdateTicketResponse: UpdateTicketResponse = {
+const mockUpdateTicketAssignSupporterResponse: UpdateTicketResponse = {
   id: 1,
   status: mockTicketStatusTypeAssigned,
   supporter: 'テストサポート担当者2',
 }
 
-const mockNewStatus: TicketStatusType = 'assigned'
+const mockTicketStatusTypeUnassigned: TicketStatusType = 'start'
+const mockUpdateTicketUnassignSupporterResponse: UpdateTicketResponse = {
+  id: 1,
+  status: mockTicketStatusTypeUnassigned,
+  supporter: null,
+}
+
+const mockNewStatus: TicketStatusType = 'in_progress'
 const mockUpdateTicketStatusRequest: UpdateTicketStatusRequest = {
   status: mockNewStatus,
+}
+
+const mockUpdateTicketStatusResponse: UpdateTicketResponse = {
+  id: 1,
+  status: mockNewStatus,
+  supporter: 'テストサポート担当者2',
 }
 
 // チケット全件取得
@@ -196,13 +210,13 @@ describe('assignSupporter', () => {
     it('正しいURLでPUTし、dataを返す', async () => {
       const mockClientUpdate = vi
         .spyOn(client.internalBackendV1Client, 'put')
-        .mockResolvedValue({ data: mockUpdateTicketResponse })
+        .mockResolvedValue({ data: mockUpdateTicketAssignSupporterResponse })
 
       const result = await assignSupporter(1)
 
       expect(mockClientUpdate).toHaveBeenCalledTimes(1)
       expect(mockClientUpdate).toHaveBeenCalledWith('/ticket/1/assign')
-      expect(result).toEqual(mockUpdateTicketResponse)
+      expect(result).toEqual(mockUpdateTicketAssignSupporterResponse)
     })
   })
 
@@ -220,13 +234,43 @@ describe('assignSupporter', () => {
   })
 })
 
+// チケット更新（サポート担当者解除設定）
+describe('unassignSupporter', () => {
+  describe('正常系', () => {
+    it('正しいURLでPUTし、dataを返す', async () => {
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockResolvedValue({ data: mockUpdateTicketUnassignSupporterResponse })
+
+      const result = await unassignSupporter(1)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
+      expect(mockClientUpdate).toHaveBeenCalledWith('/ticket/1/unassign')
+      expect(result).toEqual(mockUpdateTicketUnassignSupporterResponse)
+    })
+  })
+
+  describe('異常系', () => {
+    it('PUTに失敗した場合、エラーを返す', async () => {
+      const mockError = new Error('担当の解除に失敗しました')
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockRejectedValue(mockError)
+
+      await expect(unassignSupporter(1)).rejects.toThrow(mockError)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
+    })
+  })
+})
+
 // チケット更新（ステータス変更）
 describe('updateTicketStatus', () => {
   describe('正常系', () => {
     it('正しいURL/ボディでPUTし、dataを返す', async () => {
       const mockClientUpdate = vi
         .spyOn(client.internalBackendV1Client, 'put')
-        .mockResolvedValue({ data: mockUpdateTicketResponse })
+        .mockResolvedValue({ data: mockUpdateTicketStatusResponse })
 
       const result = await updateTicketStatus(1, mockUpdateTicketStatusRequest)
 
@@ -235,7 +279,7 @@ describe('updateTicketStatus', () => {
         '/ticket/1/status',
         mockUpdateTicketStatusRequest,
       )
-      expect(result).toEqual(mockUpdateTicketResponse)
+      expect(result).toEqual(mockUpdateTicketStatusResponse)
     })
   })
 

@@ -43,11 +43,13 @@ const mockGetTicketDetailResponse: GetTicketDetailResponse = {
 }
 const mockUserAccountType: AccountType = 'supporter'
 const mockHandleAssignSupporter = vi.fn()
+const mockHandleUnassignSupporter = vi.fn()
 const mockHandleUpdateTicketStatus = vi.fn()
 const defaultProps = {
   ticketData: mockGetTicketDetailResponse,
   userAccountType: mockUserAccountType,
   handleAssignSupporter: mockHandleAssignSupporter,
+  handleUnassignSupporter: mockHandleUnassignSupporter,
   handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
 }
 
@@ -66,7 +68,7 @@ const privateTicketProps = {
   ticketData: { ...defaultProps.ticketData, is_public: false },
 }
 
-const notOwnTicketProp = {
+const notOwnTicketProps = {
   ...defaultProps,
   ticketData: { ...defaultProps.ticketData, is_own_ticket: false },
 }
@@ -150,6 +152,34 @@ describe('TicketIdPresentational', () => {
       expect(screen.getByRole('button', { name: '担当者になる' })).toBeInTheDocument()
     })
 
+    it('「担当者になる」ボタンを押下すると handleAssignSupporter が呼ばれる', async () => {
+      customRender(<TicketIdPresentational {...noSupporterProps} />)
+
+      await userEvent.click(screen.getByRole('button', { name: '担当者になる' }))
+
+      expect(mockHandleAssignSupporter).toHaveBeenCalledTimes(1)
+    })
+
+    it('ログインしているアカウントがチケットのサポート担当者でない場合、「担当を離れる」ボタンは表示されない', () => {
+      customRender(<TicketIdPresentational {...notOwnTicketProps} />)
+
+      expect(screen.queryByRole('button', { name: '担当を離れる' })).not.toBeInTheDocument()
+    })
+
+    it('ログインしているアカウントがチケットのサポート担当者である場合、「担当を離れる」ボタンが表示される', () => {
+      customRender(<TicketIdPresentational {...defaultProps} />)
+
+      expect(screen.getByRole('button', { name: '担当を離れる' })).toBeInTheDocument()
+    })
+
+    it('「担当を離れる」ボタンを押下すると handleUnassignSupporter が呼ばれる', async () => {
+      customRender(<TicketIdPresentational {...defaultProps} />)
+
+      await userEvent.click(screen.getByRole('button', { name: '担当を離れる' }))
+
+      expect(mockHandleUnassignSupporter).toHaveBeenCalledTimes(1)
+    })
+
     it('ticketData.is_public の場合、公開設定の「公開」がアクティブになる', () => {
       customRender(<TicketIdPresentational {...defaultProps} />)
 
@@ -186,7 +216,7 @@ describe('TicketIdPresentational', () => {
     })
 
     it('チケットのサポート担当/管理者以外のアカウントの場合、ステータスボタンは disabled で押下しても handleUpdateTicketStatus は呼ばれない', async () => {
-      customRender(<TicketIdPresentational {...notOwnTicketProp} />)
+      customRender(<TicketIdPresentational {...notOwnTicketProps} />)
 
       await userEvent.click(screen.getByRole('button', { name: '対応中' }))
 

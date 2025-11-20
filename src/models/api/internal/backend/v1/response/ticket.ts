@@ -43,5 +43,5 @@ export type CreateTicketResponse = {
 export type UpdateTicketResponse = {
   id: number
   status: TicketStatusType
-  supporter: string
+  supporter: string | null
 }

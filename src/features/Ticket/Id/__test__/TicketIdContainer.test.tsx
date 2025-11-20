@@ -18,6 +18,7 @@ import {
 } from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
 import * as useAssignSupporterHandler from '@/features/Ticket/Id/hooks/handlers/useAssignSupporterHandler'
+import * as useUnassignSupporterHandler from '@/features/Ticket/Id/hooks/handlers/useUnassignSupporterHandler'
 import * as useUpdateTicketStatusHandler from '@/features/Ticket/Id/hooks/handlers/useUpdateTicketStatusHandler'
 
 const mockTicketStatusType: TicketStatusType = 'start'
@@ -110,6 +111,12 @@ vi.spyOn(useAssignSupporterHandler, 'useAssignSupporterHandler').mockReturnValue
   handleAssignSupporter: mockHandleAssignSupporter,
 })
 
+// Mocking the useUnassignSupporterHandler hook
+const mockHandleUnassignSupporter = vi.fn()
+vi.spyOn(useUnassignSupporterHandler, 'useUnassignSupporterHandler').mockReturnValue({
+  handleUnassignSupporter: mockHandleUnassignSupporter,
+})
+
 // Mocking the useUpdateTicketStatusHandler hook
 const mockHandleUpdateTicketStatus = vi.fn()
 vi.spyOn(useUpdateTicketStatusHandler, 'useUpdateTicketStatusHandler').mockReturnValue({
@@ -133,6 +140,7 @@ describe('TicketIdContainer', () => {
           userAccountType: mockUserAccountType,
           ticketData: mockGetTicketDetailResponse,
           handleAssignSupporter: mockHandleAssignSupporter,
+          handleUnassignSupporter: mockHandleUnassignSupporter,
           handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
         }),
       )
