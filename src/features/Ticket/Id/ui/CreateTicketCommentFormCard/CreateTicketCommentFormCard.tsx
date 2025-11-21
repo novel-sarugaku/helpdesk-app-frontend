@@ -9,15 +9,22 @@ interface CreateTicketCommentFormCardProps {
 export const CreateTicketCommentFormCard = ({
   handleCreateTicketComment,
 }: CreateTicketCommentFormCardProps) => {
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault() // デフォルトのフォーム送信を防止
+
+    const form = event.currentTarget // 今送信されたフォームを取り出す
 
     const formData = new FormData(event.target as HTMLFormElement)
     const commentData = formData.get('comment') as string
 
-    void handleCreateTicketComment({
-      comment: commentData,
-    })
+    try {
+      await handleCreateTicketComment({
+        comment: commentData,
+      })
+      form.reset() // 成功したらコメント欄をクリア
+    } catch (error) {
+      console.error(error)
+    }
   }
   return (
     <>
@@ -25,7 +32,12 @@ export const CreateTicketCommentFormCard = ({
         <Text color='gray.500' fontWeight='bold' mb={2}>
           質疑応答
         </Text>
-        <form onSubmit={handleSubmit}>
+        <form
+          // フォームが送信されたら、React が event を渡してこの関数を呼ぶ
+          onSubmit={(event) => {
+            void handleSubmit(event)
+          }}
+        >
           <Box borderWidth='1px' borderColor='gray.300' borderRadius='xl' ml={8}>
             <Stack gap={0}>
               <Textarea

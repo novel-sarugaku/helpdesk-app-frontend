@@ -66,7 +66,13 @@ describe('useCreateTicketCommentFormCardHandler', () => {
 
       const { result } = customRenderHook(() => useCreateTicketCommentFormCardHandler(mockTicketId))
 
-      await act(() => result.current.handleCreateTicketComment(mockCreateTicketCommentRequest))
+      await act(async () => {
+        try {
+          await result.current.handleCreateTicketComment(mockCreateTicketCommentRequest)
+        } catch (error) {
+          expect(error).toBe(mockAxiosError)
+        }
+      })
 
       expect(mockMutateAsync).toHaveBeenCalledTimes(1)
       expect(mockMutateAsync).toHaveBeenCalledWith(mockCreateTicketCommentRequest)
@@ -91,7 +97,13 @@ describe('useCreateTicketCommentFormCardHandler', () => {
 
       const { result } = customRenderHook(() => useCreateTicketCommentFormCardHandler(mockTicketId))
 
-      await act(() => result.current.handleCreateTicketComment(mockCreateTicketCommentRequest))
+      await act(async () => {
+        try {
+          await result.current.handleCreateTicketComment(mockCreateTicketCommentRequest)
+        } catch (error) {
+          expect(error).toBe(mockError)
+        }
+      })
 
       expect(mockMutateAsync).toHaveBeenCalledTimes(1)
       expect(mockMutateAsync).toHaveBeenCalledWith(mockCreateTicketCommentRequest)

@@ -25,6 +25,7 @@ export const useCreateTicketCommentFormCardHandler = (ticketId: number) => {
         description: errorMessage,
         type: 'error',
       })
+      throw error
     }
   }
 
