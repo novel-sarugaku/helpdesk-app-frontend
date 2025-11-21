@@ -6,6 +6,10 @@ export type CreateTicketRequest = {
   description: string
 }
 
+export type CreateTicketCommentRequest = {
+  comment: string
+}
+
 export type UpdateTicketStatusRequest = {
   status: TicketStatusType
 }

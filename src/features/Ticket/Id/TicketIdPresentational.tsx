@@ -2,12 +2,14 @@ import { Fragment } from 'react'
 import { Container, Text, Box, HStack, VStack, Textarea, Button, Show } from '@chakra-ui/react'
 
 import { Header } from '@/components/organisms/Header'
-import { TicketHistoriesTable } from '@/features/Ticket/Id/ui/TicketHistoriesTable'
+import { CreateTicketCommentFormCard } from '@/features/Ticket/Id/ui/CreateTicketCommentFormCard/CreateTicketCommentFormCard'
+import { TicketHistoriesTable } from '@/features/Ticket/Id/ui/TicketHistoriesTable/TicketHistoriesTable'
 import { formatDateStringToYearMonthDaySlash } from '@/shared/logic/format/dateFormatters'
 import { ticketStatusTypeLabelList } from '@/shared/constants/ticketStatusTypeLabel'
 import { type GetTicketDetailResponse } from '@/models/api/internal/backend/v1/response/ticket'
 import { type AccountType } from '@/models/constants/accountType'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
+import { type CreateTicketCommentRequest } from '@/models/api/internal/backend/v1/request/ticket'
 
 interface TicketIdPresentationalProps {
   ticketData: GetTicketDetailResponse
@@ -15,6 +17,7 @@ interface TicketIdPresentationalProps {
   handleAssignSupporter: () => Promise<void>
   handleUnassignSupporter: () => Promise<void>
   handleUpdateTicketStatus: (newStatus: TicketStatusType) => Promise<void>
+  handleCreateTicketComment: (comment: CreateTicketCommentRequest) => Promise<void>
 }
 
 export const TicketIdPresentational = ({
@@ -23,6 +26,7 @@ export const TicketIdPresentational = ({
   handleAssignSupporter,
   handleUnassignSupporter,
   handleUpdateTicketStatus,
+  handleCreateTicketComment,
 }: TicketIdPresentationalProps) => {
   return (
     <>
@@ -228,6 +232,8 @@ export const TicketIdPresentational = ({
             </VStack>
           </VStack>
         </Box>
+
+        <CreateTicketCommentFormCard handleCreateTicketComment={handleCreateTicketComment} />
 
         <TicketHistoriesTable ticketHistories={ticketData.ticket_histories} />
       </Container>

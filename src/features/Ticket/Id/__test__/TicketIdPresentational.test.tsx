@@ -5,7 +5,8 @@ import userEvent from '@testing-library/user-event'
 import { customRender } from '@/tests/helpers/customRender'
 import { TicketIdPresentational } from '@/features/Ticket/Id/TicketIdPresentational'
 import * as Header from '@/components/organisms/Header'
-import * as TicketHistoriesTable from '@/features/Ticket/Id/ui/TicketHistoriesTable'
+import * as CreateTicketCommentFormCard from '@/features/Ticket/Id/ui/CreateTicketCommentFormCard/CreateTicketCommentFormCard'
+import * as TicketHistoriesTable from '@/features/Ticket/Id/ui/TicketHistoriesTable/TicketHistoriesTable'
 import {
   type GetTicketDetailResponse,
   type GetTicketHistoryResponseItem,
@@ -45,12 +46,14 @@ const mockUserAccountType: AccountType = 'supporter'
 const mockHandleAssignSupporter = vi.fn()
 const mockHandleUnassignSupporter = vi.fn()
 const mockHandleUpdateTicketStatus = vi.fn()
+const mockHandleCreateTicketComment = vi.fn()
 const defaultProps = {
   ticketData: mockGetTicketDetailResponse,
   userAccountType: mockUserAccountType,
   handleAssignSupporter: mockHandleAssignSupporter,
   handleUnassignSupporter: mockHandleUnassignSupporter,
   handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
+  handleCreateTicketComment: mockHandleCreateTicketComment,
 }
 
 const mockUserAccountTypeIsSupporter: AccountType = 'supporter'
@@ -97,6 +100,15 @@ const mockHeader = vi.spyOn(Header, 'Header').mockImplementation(() => {
   return <div data-testid='mock-header'>Mocked Header</div>
 })
 
+// Mocking the CreateTicketCommentFormCard component
+const mockCreateTicketCommentFormCard = vi
+  .spyOn(CreateTicketCommentFormCard, 'CreateTicketCommentFormCard')
+  .mockImplementation(() => {
+    return (
+      <div data-testid='mock-createTicketCommentFormCard'>Mocked CreateTicketCommentFormCard</div>
+    )
+  })
+
 // Mocking the TicketHistoriesTable component
 const mockTicketHistoriesTable = vi
   .spyOn(TicketHistoriesTable, 'TicketHistoriesTable')
@@ -117,6 +129,17 @@ describe('TicketIdPresentational', () => {
       expect(mockHeader.mock.calls[0][0]).toEqual(
         expect.objectContaining({
           userAccountType: mockUserAccountType,
+        }),
+      )
+    })
+
+    it('正しいpropsでCreateTicketCommentFormCardコンポーネントが表示される', () => {
+      customRender(<TicketIdPresentational {...defaultProps} />)
+
+      expect(screen.getByTestId('mock-createTicketCommentFormCard')).toBeInTheDocument()
+      expect(mockCreateTicketCommentFormCard.mock.calls[0][0]).toEqual(
+        expect.objectContaining({
+          handleCreateTicketComment: mockHandleCreateTicketComment,
         }),
       )
     })
