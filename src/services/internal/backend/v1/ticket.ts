@@ -1,12 +1,14 @@
 import { internalBackendV1Client } from './client'
 import {
   type CreateTicketRequest,
+  type CreateTicketCommentRequest,
   type UpdateTicketStatusRequest,
 } from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
   type GetTicketDetailResponse,
   type CreateTicketResponse,
+  type CreateTicketCommentResponse,
   type UpdateTicketResponse,
 } from '@/models/api/internal/backend/v1/response/ticket'
 
@@ -27,6 +29,18 @@ export const getTicket = async (ticketId: number): Promise<GetTicketDetailRespon
 // チケット登録
 export const createTicket = async (request: CreateTicketRequest): Promise<CreateTicketResponse> => {
   const response = await internalBackendV1Client.post<CreateTicketResponse>('/ticket', request)
+  return response.data
+}
+
+// チケットに対する質疑応答登録
+export const createTicketComment = async (
+  ticketId: number,
+  request: CreateTicketCommentRequest,
+): Promise<CreateTicketCommentResponse> => {
+  const response = await internalBackendV1Client.post<CreateTicketCommentResponse>(
+    `/ticket/${String(ticketId)}/comments`,
+    request,
+  )
   return response.data
 }
 

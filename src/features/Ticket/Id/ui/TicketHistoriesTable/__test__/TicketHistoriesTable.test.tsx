@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
 
 import { customRender } from '@/tests/helpers/customRender'
-import { TicketHistoriesTable } from '@/features/Ticket/Id/ui/TicketHistoriesTable'
+import { TicketHistoriesTable } from '@/features/Ticket/Id/ui/TicketHistoriesTable/TicketHistoriesTable'
 import { type GetTicketHistoryResponseItem } from '@/models/api/internal/backend/v1/response/ticket'
 
 const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [

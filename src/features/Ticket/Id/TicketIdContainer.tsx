@@ -10,6 +10,7 @@ import { useTicketDetailQuery } from '@/features/Ticket/Id/hooks/queries/useTick
 import { useAssignSupporterHandler } from '@/features/Ticket/Id/hooks/handlers/useAssignSupporterHandler'
 import { useUnassignSupporterHandler } from '@/features/Ticket/Id/hooks/handlers/useUnassignSupporterHandler'
 import { useUpdateTicketStatusHandler } from '@/features/Ticket/Id/hooks/handlers/useUpdateTicketStatusHandler'
+import { useCreateTicketCommentFormCardHandler } from '@/features/Ticket/Id/hooks/handlers/useCreateTicketCommentFormCardHandler'
 
 export const TicketIdContainer = () => {
   const { data, isPending, isError } = useHealthcheckAuthQuery()
@@ -19,6 +20,7 @@ export const TicketIdContainer = () => {
   const { handleAssignSupporter } = useAssignSupporterHandler(ticketId)
   const { handleUnassignSupporter } = useUnassignSupporterHandler(ticketId)
   const { handleUpdateTicketStatus } = useUpdateTicketStatusHandler(ticketId)
+  const { handleCreateTicketComment } = useCreateTicketCommentFormCardHandler(ticketId)
 
   // ヘルスチェックで isPending の場合は、ローディング画面へ遷移
   if (isPending) return <LoadingPresentational />
@@ -42,6 +44,7 @@ export const TicketIdContainer = () => {
       handleAssignSupporter={handleAssignSupporter}
       handleUnassignSupporter={handleUnassignSupporter}
       handleUpdateTicketStatus={handleUpdateTicketStatus}
+      handleCreateTicketComment={handleCreateTicketComment}
     />
   )
 }

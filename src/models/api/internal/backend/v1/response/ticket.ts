@@ -40,6 +40,12 @@ export type CreateTicketResponse = {
   created_at: string
 }
 
+export type CreateTicketCommentResponse = {
+  id: number
+  action_user: string
+  comment: string
+}
+
 export type UpdateTicketResponse = {
   id: number
   status: TicketStatusType
