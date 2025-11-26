@@ -21,6 +21,7 @@ import * as useAssignSupporterHandler from '@/features/Ticket/Id/hooks/handlers/
 import * as useUnassignSupporterHandler from '@/features/Ticket/Id/hooks/handlers/useUnassignSupporterHandler'
 import * as useUpdateTicketStatusHandler from '@/features/Ticket/Id/hooks/handlers/useUpdateTicketStatusHandler'
 import * as useCreateTicketCommentFormCardHandler from '@/features/Ticket/Id/hooks/handlers/useCreateTicketCommentFormCardHandler'
+import * as useUpdateTicketVisibilityHandler from '@/features/Ticket/Id/hooks/handlers/useUpdateTicketVisibilityHandler'
 
 const mockTicketStatusType: TicketStatusType = 'start'
 const mockGetTicketHistoryResponseItem: GetTicketHistoryResponseItem[] = [
@@ -133,6 +134,12 @@ vi.spyOn(
   handleCreateTicketComment: mockHandleCreateTicketComment,
 })
 
+// Mocking the useUpdateTicketVisibilityHandler hook
+const mockHandleUpdateTicketVisibility = vi.fn()
+vi.spyOn(useUpdateTicketVisibilityHandler, 'useUpdateTicketVisibilityHandler').mockReturnValue({
+  handleUpdateTicketVisibility: mockHandleUpdateTicketVisibility,
+})
+
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -153,6 +160,7 @@ describe('TicketIdContainer', () => {
           handleUnassignSupporter: mockHandleUnassignSupporter,
           handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
           handleCreateTicketComment: mockHandleCreateTicketComment,
+          handleUpdateTicketVisibility: mockHandleUpdateTicketVisibility,
         }),
       )
       expect(screen.getByTestId('mock-ticketIdPresentational')).toBeInTheDocument()

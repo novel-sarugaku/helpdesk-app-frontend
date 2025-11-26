@@ -9,11 +9,13 @@ import {
   assignSupporter,
   unassignSupporter,
   updateTicketStatus,
+  updateTicketVisibility,
 } from '@/services/internal/backend/v1/ticket'
 import {
   type CreateTicketRequest,
   type CreateTicketCommentRequest,
   type UpdateTicketStatusRequest,
+  type UpdateTicketVisibilityRequest,
 } from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
@@ -22,6 +24,7 @@ import {
   type CreateTicketResponse,
   type CreateTicketCommentResponse,
   type UpdateTicketResponse,
+  type UpdateTicketVisibilityResponse,
 } from '@/models/api/internal/backend/v1/response/ticket'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
 
@@ -124,6 +127,16 @@ const mockUpdateTicketStatusResponse: UpdateTicketResponse = {
   id: 1,
   status: mockNewStatus,
   supporter: 'テストサポート担当者2',
+}
+
+const mockUpdateTicketVisibilityRequest: UpdateTicketVisibilityRequest = {
+  is_public: false,
+}
+
+const mockUpdateTicketVisibilityResponse: UpdateTicketVisibilityResponse = {
+  id: 1,
+  action_user: 'テスト社員1',
+  is_public: false,
 }
 
 // チケット全件取得
@@ -339,6 +352,41 @@ describe('updateTicketStatus', () => {
         .mockRejectedValue(mockError)
 
       await expect(updateTicketStatus(1, mockUpdateTicketStatusRequest)).rejects.toThrow(mockError)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
+    })
+  })
+})
+
+// チケット更新（公開設定変更）
+describe('updateTicketVisibility', () => {
+  describe('正常系', () => {
+    it('正しいURL/ボディでPUTし、dataを返す', async () => {
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockResolvedValue({ data: mockUpdateTicketVisibilityResponse })
+
+      const result = await updateTicketVisibility(1, mockUpdateTicketVisibilityRequest)
+
+      expect(mockClientUpdate).toHaveBeenCalledTimes(1)
+      expect(mockClientUpdate).toHaveBeenCalledWith(
+        '/ticket/1/visibility',
+        mockUpdateTicketVisibilityRequest,
+      )
+      expect(result).toEqual(mockUpdateTicketVisibilityResponse)
+    })
+  })
+
+  describe('異常系', () => {
+    it('PUTに失敗した場合、エラーを返す', async () => {
+      const mockError = new Error('公開設定の更新に失敗しました')
+      const mockClientUpdate = vi
+        .spyOn(client.internalBackendV1Client, 'put')
+        .mockRejectedValue(mockError)
+
+      await expect(updateTicketVisibility(1, mockUpdateTicketVisibilityRequest)).rejects.toThrow(
+        mockError,
+      )
 
       expect(mockClientUpdate).toHaveBeenCalledTimes(1)
     })
