@@ -10,6 +10,7 @@ import { type GetTicketDetailResponse } from '@/models/api/internal/backend/v1/r
 import { type AccountType } from '@/models/constants/accountType'
 import { type TicketStatusType } from '@/models/constants/ticketStatusType'
 import { type CreateTicketCommentRequest } from '@/models/api/internal/backend/v1/request/ticket'
+import { type UpdateTicketVisibilityRequest } from '@/models/api/internal/backend/v1/request/ticket'
 
 interface TicketIdPresentationalProps {
   ticketData: GetTicketDetailResponse
@@ -18,6 +19,7 @@ interface TicketIdPresentationalProps {
   handleUnassignSupporter: () => Promise<void>
   handleUpdateTicketStatus: (newStatus: TicketStatusType) => Promise<void>
   handleCreateTicketComment: (comment: CreateTicketCommentRequest) => Promise<void>
+  handleUpdateTicketVisibility: (visibility: UpdateTicketVisibilityRequest) => Promise<void>
 }
 
 export const TicketIdPresentational = ({
@@ -27,6 +29,7 @@ export const TicketIdPresentational = ({
   handleUnassignSupporter,
   handleUpdateTicketStatus,
   handleCreateTicketComment,
+  handleUpdateTicketVisibility,
 }: TicketIdPresentationalProps) => {
   return (
     <>
@@ -94,7 +97,7 @@ export const TicketIdPresentational = ({
               <Text color='gray.500' fontWeight='bold' w='100px'>
                 公開設定
               </Text>
-              <Box
+              <Button
                 ml={2}
                 p={2}
                 border={ticketData.is_public ? 'solid 2px' : 'solid 1px'}
@@ -105,12 +108,16 @@ export const TicketIdPresentational = ({
                 textAlign='center'
                 data-testid='public-box'
                 data-active={ticketData.is_public}
+                cursor={'pointer'}
+                onClick={() => {
+                  void handleUpdateTicketVisibility({ is_public: true })
+                }}
               >
                 <Text color='gray.500' fontSize='sm'>
                   公開
                 </Text>
-              </Box>
-              <Box
+              </Button>
+              <Button
                 ml={2}
                 p={2}
                 border={!ticketData.is_public ? 'solid 2px' : 'solid 1px'}
@@ -121,11 +128,15 @@ export const TicketIdPresentational = ({
                 textAlign='center'
                 data-testid='private-box'
                 data-active={!ticketData.is_public}
+                cursor={'pointer'}
+                onClick={() => {
+                  void handleUpdateTicketVisibility({ is_public: false })
+                }}
               >
                 <Text color='gray.500' fontSize='sm'>
                   非公開
                 </Text>
-              </Box>
+              </Button>
             </HStack>
 
             <HStack w='100%' align='start'>

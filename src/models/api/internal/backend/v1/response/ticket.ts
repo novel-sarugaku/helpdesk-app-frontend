@@ -51,3 +51,9 @@ export type UpdateTicketResponse = {
   status: TicketStatusType
   supporter: string | null
 }
+
+export type UpdateTicketVisibilityResponse = {
+  id: number
+  action_user: string
+  is_public: boolean
+}

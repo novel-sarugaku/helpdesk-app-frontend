@@ -3,6 +3,7 @@ import {
   type CreateTicketRequest,
   type CreateTicketCommentRequest,
   type UpdateTicketStatusRequest,
+  type UpdateTicketVisibilityRequest,
 } from '@/models/api/internal/backend/v1/request/ticket'
 import {
   type GetTicketResponseItem,
@@ -10,6 +11,7 @@ import {
   type CreateTicketResponse,
   type CreateTicketCommentResponse,
   type UpdateTicketResponse,
+  type UpdateTicketVisibilityResponse,
 } from '@/models/api/internal/backend/v1/response/ticket'
 
 // チケット全件取得
@@ -67,6 +69,18 @@ export const updateTicketStatus = async (
 ): Promise<UpdateTicketResponse> => {
   const response = await internalBackendV1Client.put<UpdateTicketResponse>(
     `/ticket/${String(ticketId)}/status`,
+    request,
+  )
+  return response.data
+}
+
+// チケット更新（公開設定変更）
+export const updateTicketVisibility = async (
+  ticketId: number,
+  request: UpdateTicketVisibilityRequest,
+): Promise<UpdateTicketVisibilityResponse> => {
+  const response = await internalBackendV1Client.put<UpdateTicketVisibilityResponse>(
+    `/ticket/${String(ticketId)}/visibility`,
     request,
   )
   return response.data

@@ -47,6 +47,7 @@ const mockHandleAssignSupporter = vi.fn()
 const mockHandleUnassignSupporter = vi.fn()
 const mockHandleUpdateTicketStatus = vi.fn()
 const mockHandleCreateTicketComment = vi.fn()
+const mockHandleUpdateTicketVisibility = vi.fn()
 const defaultProps = {
   ticketData: mockGetTicketDetailResponse,
   userAccountType: mockUserAccountType,
@@ -54,6 +55,7 @@ const defaultProps = {
   handleUnassignSupporter: mockHandleUnassignSupporter,
   handleUpdateTicketStatus: mockHandleUpdateTicketStatus,
   handleCreateTicketComment: mockHandleCreateTicketComment,
+  handleUpdateTicketVisibility: mockHandleUpdateTicketVisibility,
 }
 
 const mockUserAccountTypeIsSupporter: AccountType = 'supporter'
@@ -216,6 +218,22 @@ describe('TicketIdPresentational', () => {
 
       expect(screen.getByTestId('public-box')).toHaveAttribute('data-active', 'false')
       expect(screen.getByTestId('private-box')).toHaveAttribute('data-active', 'true')
+    })
+
+    it('「公開」ボタンを押下すると、handleUpdateTicketVisibility が呼ばれる', async () => {
+      customRender(<TicketIdPresentational {...privateTicketProps} />)
+
+      await userEvent.click(screen.getByRole('button', { name: '公開' }))
+
+      expect(mockHandleUpdateTicketVisibility).toHaveBeenCalledTimes(1)
+    })
+
+    it('「非公開」ボタンを押下すると、handleUpdateTicketVisibility が呼ばれる', async () => {
+      customRender(<TicketIdPresentational {...defaultProps} />)
+
+      await userEvent.click(screen.getByRole('button', { name: '非公開' }))
+
+      expect(mockHandleUpdateTicketVisibility).toHaveBeenCalledTimes(1)
     })
 
     it('ticketData.status に対応するステータスだけがアクティブになる', () => {

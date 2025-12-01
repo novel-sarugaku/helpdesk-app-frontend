@@ -13,3 +13,7 @@ export type CreateTicketCommentRequest = {
 export type UpdateTicketStatusRequest = {
   status: TicketStatusType
 }
+
+export type UpdateTicketVisibilityRequest = {
+  is_public: boolean
+}
